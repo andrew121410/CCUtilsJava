@@ -1,4 +1,4 @@
-package Storage;
+package CCUtils.Storage;
 
 import cc.summermc.bukkitYaml.file.FileConfiguration;
 import cc.summermc.bukkitYaml.file.YamlConfiguration;

@@ -1,4 +1,4 @@
-package Utils;
+package CCUtils.Utils;
 
 import java.io.*;
 import java.net.URL;

@@ -1,4 +1,4 @@
-package Storage;
+package CCUtils.Storage;
 
 import java.sql.*;
 
