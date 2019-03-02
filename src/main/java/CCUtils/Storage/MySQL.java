@@ -28,7 +28,7 @@ public class MySQL {
         }
         final String url =
                 "jdbc:mysql://" + this.Host + ":" + this.Port + "/" + this.Database + "?autoReconnect=true&verifyServerCertificate=false&useSSL=true";
-//        final String url = "jdbc:mysql://" + this.Host + "/" + this.Database + "?user=" + this.Username + "&password=" + this.Password;
+// FIX       final String url = "jdbc:mysql://" + this.Host + "/" + this.Database + "?user=" + this.Username + "&password=" + this.Password;
         try {
             this.connection = DriverManager.getConnection(url, this.Username, this.Password);
         } catch (SQLException e) {
@@ -41,12 +41,12 @@ public class MySQL {
             if (!this.connection.isClosed() && this.connection != null) {
                 this.connection.close();
                 System.out.println(
-                        "&a[MySQLAPI] The connection to the MySQL server was successfully disconnected!");
+                        "[MySQLAPI] The connection to the MySQL server was successfully disconnected!");
             } else {
                 System.out.println("[MySQLAPI] The connection is already disconnected!");
             }
         } catch (SQLException e3) {
-            System.out.println("&c[MySQLAPI] Error 03");
+            System.out.println("[MySQLAPI] Error 03");
             System.out.println("[MySQLAPI] There was an error while disconnecting!");
             e3.printStackTrace();
         }
@@ -56,7 +56,7 @@ public class MySQL {
         try {
             return !this.connection.isClosed();
         } catch (SQLException e2) {
-            System.out.println("&c[MySQLAPI] Error 02");
+            System.out.println("[MySQLAPI] Error 02");
             System.out.println("[MySQLAPI] An error occurred while connecting!");
             e2.printStackTrace();
         }
@@ -75,7 +75,7 @@ public class MySQL {
             return rs;
 
         } catch (SQLException e4) {
-            System.out.println("&c[MySQLAPI] Error 04");
+            System.out.println("[MySQLAPI] Error 04");
             System.out
                     .println("[MySQLAPI] An error occurred while executing the command!");
             e4.printStackTrace();
@@ -94,7 +94,7 @@ public class MySQL {
             return rs;
 
         } catch (SQLException e4) {
-            System.out.println("&c[MySQLAPI] Error 04");
+            System.out.println("[MySQLAPI] Error 04");
             System.out
                     .println("[MySQLAPI] An error occurred while executing the command!");
             e4.printStackTrace();
@@ -110,7 +110,7 @@ public class MySQL {
             Statement st = this.connection.createStatement();
             st.executeUpdate(command);
         } catch (SQLException e4) {
-            System.out.println("&c[MySQLAPI] Error 04");
+            System.out.println("[MySQLAPI] Error 04");
             System.out
                     .println("[MySQLAPI] An error occurred while executing the command!");
             e4.printStackTrace();
