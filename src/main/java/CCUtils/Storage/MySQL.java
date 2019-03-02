@@ -26,11 +26,11 @@ public class MySQL {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-//        String url =
-//                "jdbc:mysql://" + this.Host + ":" + this.Port + "/" + this.Database + "?autoReconnect=true&verifyServerCertificate=false&useSSL=true";
-        final String url = "jdbc:mysql://" + this.Host + "/" + this.Database + "?user=" + this.Username + "&password=" + this.Password;
+        final String url =
+                "jdbc:mysql://" + this.Host + ":" + this.Port + "/" + this.Database + "?autoReconnect=true&verifyServerCertificate=false&useSSL=true";
+//        final String url = "jdbc:mysql://" + this.Host + "/" + this.Database + "?user=" + this.Username + "&password=" + this.Password;
         try {
-            this.connection = DriverManager.getConnection(url);
+            this.connection = DriverManager.getConnection(url, this.Username, this.Password);
         } catch (SQLException e) {
             e.printStackTrace();
         }
