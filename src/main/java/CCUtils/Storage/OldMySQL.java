@@ -117,6 +117,21 @@ public class OldMySQL {
                     .println("[MySQLAPI] An error occurred while executing the command!");
             e4.printStackTrace();
         }
+    }
 
+    public PreparedStatement ExecuteCommandPreparedStatement(String command) {
+        try {
+            if (this.connection.isClosed()) {
+                this.Connect();
+            }
+            PreparedStatement pst = this.connection.prepareStatement(command);
+            return pst;
+        } catch (SQLException e4) {
+            System.out.println("[MySQLAPI] Error 04");
+            System.out
+                    .println("[MySQLAPI] An error occurred while executing the command!");
+            e4.printStackTrace();
+        }
+        return null;
     }
 }
