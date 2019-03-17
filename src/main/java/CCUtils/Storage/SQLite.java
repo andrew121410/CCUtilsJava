@@ -74,8 +74,7 @@ public class SQLite implements ISQL {
             }
 
             Statement st = this.connection.createStatement();
-            st.executeQuery(command);
-            ResultSet rs = st.getResultSet();
+            ResultSet rs = st.executeQuery(command);
             return rs;
 
         } catch (SQLException e4) {
