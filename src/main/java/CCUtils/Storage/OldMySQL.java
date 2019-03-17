@@ -2,7 +2,7 @@ package CCUtils.Storage;
 
 import java.sql.*;
 
-public class OldMySQL {
+public class OldMySQL implements ISQL{
 
     private String Host;
     private String Database;

@@ -2,7 +2,7 @@ package CCUtils.Storage;
 
 import java.sql.*;
 
-public class MySQL {
+public class MySQL implements ISQL{
 
     private String Host;
     private String Database;

@@ -3,7 +3,7 @@ package CCUtils.Storage;
 import java.io.File;
 import java.sql.*;
 
-public class SQLite {
+public class SQLite implements ISQL{
 
     private String dbName;
     private File file = null;
