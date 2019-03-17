@@ -1,14 +1,23 @@
 package CCUtils.Storage;
 
+import java.io.File;
 import java.sql.*;
 
 public class SQLite {
 
     private String dbName;
+    private File file = null;
+
+    String url;
 
     private Connection connection;
 
     public SQLite(String dbName) {
+        this.dbName = dbName;
+    }
+
+    public SQLite(File file, String dbName) {
+        this.file = file;
         this.dbName = dbName;
     }
 
@@ -18,8 +27,12 @@ public class SQLite {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        final String url =
-                "jdbc:sqlite:" + dbName + ".db";
+        if (this.file == null) {
+            url = "jdbc:sqlite:" + dbName + ".db";
+        } else {
+            url = "jdbc:sqlite:" + this.file.toString() + this.dbName + ".db";
+        }
+
         try {
             this.connection = DriverManager.getConnection(url);
         } catch (SQLException e) {
