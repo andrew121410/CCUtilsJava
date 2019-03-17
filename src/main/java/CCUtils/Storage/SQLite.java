@@ -30,7 +30,7 @@ public class SQLite implements ISQL{
         if (this.file == null) {
             url = "jdbc:sqlite:" + dbName + ".db";
         } else {
-            url = "jdbc:sqlite:" + this.file.toString() + this.dbName + ".db";
+            url = "jdbc:sqlite:" + this.file.toPath() + this.dbName + ".db";
         }
 
         try {
