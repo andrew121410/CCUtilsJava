@@ -3,7 +3,7 @@ package CCUtils.Storage;
 import java.io.File;
 import java.sql.*;
 
-public class SQLite implements ISQL{
+public class SQLite implements ISQL {
 
     private String dbName;
     private File file = null;
@@ -30,7 +30,7 @@ public class SQLite implements ISQL{
         if (this.file == null) {
             url = "jdbc:sqlite:" + dbName + ".db";
         } else {
-            url = "jdbc:sqlite:" + this.file.toPath() + this.dbName + ".db";
+            url = "jdbc:sqlite:" + this.file.getAbsolutePath() + "/" + this.dbName + ".db";
         }
 
         try {
