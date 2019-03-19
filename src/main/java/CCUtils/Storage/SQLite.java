@@ -45,7 +45,7 @@ public class SQLite implements ISQL {
             if (!this.connection.isClosed() && this.connection != null) {
                 this.connection.close();
                 System.out.println(
-                        "[SQLITE] The connection to the MySQL server was successfully disconnected!");
+                        "[SQLITE] The connection to the SQLite server was successfully disconnected!");
             } else {
                 System.out.println("[SQLITE] The connection is already disconnected!");
             }
