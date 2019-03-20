@@ -1,14 +1,16 @@
 package CCUtils.Storage;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.sql.*;
 
 public class SQLite implements ISQL {
 
     private String dbName;
     private File file = null;
+    private Path path = null;
 
-    String url;
+    private String url;
 
     private Connection connection;
 
@@ -21,16 +23,23 @@ public class SQLite implements ISQL {
         this.dbName = dbName;
     }
 
+    public SQLite(Path path, String dbName) {
+        this.path = path;
+        this.dbName = dbName;
+    }
+
     public void Connect() {
         try {
             Class.forName("org.sqlite.JDBC").newInstance();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        if (this.file == null) {
+        if (this.file == null && this.path == null) {
             url = "jdbc:sqlite:" + dbName + ".db";
-        } else {
+        } else if (this.file != null && this.path == null){
             url = "jdbc:sqlite:" + this.file.getAbsolutePath() + "/" + this.dbName + ".db";
+        }else{
+            url = "jdbc:sqlite:" + this.path.toString() + "/" + this.dbName + ".db";
         }
 
         try {
