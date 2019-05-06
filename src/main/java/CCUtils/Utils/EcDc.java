@@ -11,16 +11,16 @@ public class EcDc {
             number = 9;
         }
 
-        StringBuffer stringBuffer = new StringBuffer(what);
+        StringBuilder stringBuilder = new StringBuilder(what);
 
-        for (int i = 0; i < stringBuffer.length(); i++) {
+        for (int i = 0; i < stringBuilder.length(); i++) {
             int temp = 0;
-            temp = (int) stringBuffer.charAt(i);
+            temp = (int) stringBuilder.charAt(i);
             temp = temp * number;
-            stringBuffer.setCharAt(i, (char) temp);
+            stringBuilder.setCharAt(i, (char) temp);
         }
 
-        return stringBuffer.toString();
+        return stringBuilder.toString();
 
     }
 
@@ -29,16 +29,16 @@ public class EcDc {
             number = 9;
         }
 
-        StringBuilder stringBuffer = new StringBuilder(what);
+        StringBuilder stringBuilder = new StringBuilder(what);
 
-        for (int i = 0; i < stringBuffer.length(); i++) {
+        for (int i = 0; i < stringBuilder.length(); i++) {
             int temp = 0;
-            temp = (int) stringBuffer.charAt(i);
+            temp = (int) stringBuilder.charAt(i);
             temp = temp / number;
-            stringBuffer.setCharAt(i, (char) temp);
+            stringBuilder.setCharAt(i, (char) temp);
         }
 
-        return stringBuffer.toString();
+        return stringBuilder.toString();
 
     }
 }
