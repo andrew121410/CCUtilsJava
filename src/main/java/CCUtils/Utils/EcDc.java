@@ -29,7 +29,7 @@ public class EcDc {
             number = 9;
         }
 
-        StringBuffer stringBuffer = new StringBuffer(what);
+        StringBuilder stringBuffer = new StringBuilder(what);
 
         for (int i = 0; i < stringBuffer.length(); i++) {
             int temp = 0;
