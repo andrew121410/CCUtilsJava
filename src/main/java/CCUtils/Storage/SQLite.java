@@ -36,9 +36,9 @@ public class SQLite implements ISQL {
         }
         if (this.file == null && this.path == null) {
             url = "jdbc:sqlite:" + dbName + ".db";
-        } else if (this.file != null && this.path == null){
+        } else if (this.file != null && this.path == null) {
             url = "jdbc:sqlite:" + this.file.getAbsolutePath() + "/" + this.dbName + ".db";
-        }else{
+        } else {
             url = "jdbc:sqlite:" + this.path.toString() + "/" + this.dbName + ".db";
         }
 
@@ -53,8 +53,6 @@ public class SQLite implements ISQL {
         try {
             if (!this.connection.isClosed() && this.connection != null) {
                 this.connection.close();
-                System.out.println(
-                        "[SQLITE] The connection to the SQLite server was successfully disconnected!");
             } else {
                 System.out.println("[SQLITE] The connection is already disconnected!");
             }
@@ -81,15 +79,11 @@ public class SQLite implements ISQL {
             if (this.connection.isClosed()) {
                 this.Connect();
             }
-
             Statement st = this.connection.createStatement();
-            ResultSet rs = st.executeQuery(command);
-            return rs;
-
+            return st.executeQuery(command);
         } catch (SQLException e4) {
             System.out.println("[SQLITE] Error 04");
-            System.out
-                    .println("[SQLITE] An error occurred while executing the command!");
+            System.out.println("[SQLITE] An error occurred while executing the command!");
             e4.printStackTrace();
         }
         return null;
@@ -102,13 +96,10 @@ public class SQLite implements ISQL {
             }
             PreparedStatement pst = this.connection.prepareStatement(command);
             pst.executeQuery();
-            ResultSet rs = pst.getResultSet();
-            return rs;
-
+            return pst.getResultSet();
         } catch (SQLException e4) {
             System.out.println("[SQLITE] Error 04");
-            System.out
-                    .println("[SQLITE] An error occurred while executing the command!");
+            System.out.println("[SQLITE] An error occurred while executing the command!");
             e4.printStackTrace();
         }
         return null;
@@ -123,8 +114,7 @@ public class SQLite implements ISQL {
             st.executeUpdate(command);
         } catch (SQLException e4) {
             System.out.println("[SQLITE] Error 04");
-            System.out
-                    .println("[SQLITE] An error occurred while executing the command!");
+            System.out.println("[SQLITE] An error occurred while executing the command!");
             e4.printStackTrace();
         }
 
@@ -135,12 +125,10 @@ public class SQLite implements ISQL {
             if (this.connection.isClosed()) {
                 this.Connect();
             }
-            PreparedStatement pst = this.connection.prepareStatement(command);
-            return pst;
+            return this.connection.prepareStatement(command);
         } catch (SQLException e4) {
             System.out.println("[SQLITE] Error 04");
-            System.out
-                    .println("[SQLITE] An error occurred while executing the command!");
+            System.out.println("[SQLITE] An error occurred while executing the command!");
             e4.printStackTrace();
         }
         return null;

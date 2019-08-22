@@ -26,8 +26,7 @@ public class MySQL implements ISQL {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        final String url =
-                "jdbc:mysql://" + this.Host + ":" + this.Port + "/" + this.Database + "?autoReconnect=true&verifyServerCertificate=false&useSSL=true&serverTimezone=EST";
+        final String url = "jdbc:mysql://" + this.Host + ":" + this.Port + "/" + this.Database + "?autoReconnect=true&verifyServerCertificate=false&useSSL=true&serverTimezone=EST";
         try {
             this.connection = DriverManager.getConnection(url, this.Username, this.Password);
         } catch (SQLException e) {
@@ -39,14 +38,12 @@ public class MySQL implements ISQL {
         try {
             if (!this.connection.isClosed() && this.connection != null) {
                 this.connection.close();
-                System.out.println(
-                        "[MySQLAPI] The connection to the MySQL server was successfully disconnected!");
             } else {
-                System.out.println("[MySQLAPI] The connection is already disconnected!");
+                System.out.println("[MySQL] The connection is already disconnected!");
             }
         } catch (SQLException e3) {
-            System.out.println("[MySQLAPI] Error 03");
-            System.out.println("[MySQLAPI] There was an error while disconnecting!");
+            System.out.println("[MySQL] Error 03");
+            System.out.println("[MySQL] There was an error while disconnecting!");
             e3.printStackTrace();
         }
     }
@@ -55,8 +52,8 @@ public class MySQL implements ISQL {
         try {
             return !this.connection.isClosed();
         } catch (SQLException e2) {
-            System.out.println("[MySQLAPI] Error 02");
-            System.out.println("[MySQLAPI] An error occurred while connecting!");
+            System.out.println("[MySQL] Error 02");
+            System.out.println("[MySQL] An error occurred while connecting!");
             e2.printStackTrace();
         }
         return false;
@@ -70,13 +67,10 @@ public class MySQL implements ISQL {
 
             Statement st = this.connection.createStatement();
             st.executeQuery(command);
-            ResultSet rs = st.getResultSet();
-            return rs;
-
+            return st.getResultSet();
         } catch (SQLException e4) {
-            System.out.println("[MySQLAPI] Error 04");
-            System.out
-                    .println("[MySQLAPI] An error occurred while executing the command!");
+            System.out.println("[MySQL] Error 04");
+            System.out.println("[MySQL] An error occurred while executing the command!");
             e4.printStackTrace();
         }
         return null;
@@ -89,13 +83,10 @@ public class MySQL implements ISQL {
             }
             PreparedStatement pst = this.connection.prepareStatement(command);
             pst.executeQuery();
-            ResultSet rs = pst.getResultSet();
-            return rs;
-
+            return pst.getResultSet();
         } catch (SQLException e4) {
-            System.out.println("[MySQLAPI] Error 04");
-            System.out
-                    .println("[MySQLAPI] An error occurred while executing the command!");
+            System.out.println("[MySQL] Error 04");
+            System.out.println("[MySQL] An error occurred while executing the command!");
             e4.printStackTrace();
         }
         return null;
@@ -109,9 +100,8 @@ public class MySQL implements ISQL {
             Statement st = this.connection.createStatement();
             st.executeUpdate(command);
         } catch (SQLException e4) {
-            System.out.println("[MySQLAPI] Error 04");
-            System.out
-                    .println("[MySQLAPI] An error occurred while executing the command!");
+            System.out.println("[MySQL] Error 04");
+            System.out.println("[MySQL] An error occurred while executing the command!");
             e4.printStackTrace();
         }
 
@@ -122,12 +112,10 @@ public class MySQL implements ISQL {
             if (this.connection.isClosed()) {
                 this.Connect();
             }
-            PreparedStatement pst = this.connection.prepareStatement(command);
-            return pst;
+            return this.connection.prepareStatement(command);
         } catch (SQLException e4) {
             System.out.println("[MySQLAPI] Error 04");
-            System.out
-                    .println("[MySQLAPI] An error occurred while executing the command!");
+            System.out.println("[MySQLAPI] An error occurred while executing the command!");
             e4.printStackTrace();
         }
         return null;
