@@ -13,7 +13,7 @@ public class FileUtils {
 
     }
 
-    private static void downloadUsingStream(String urlStr, String file) throws IOException {
+    public void downloadUsingStream(String urlStr, String file) throws IOException {
         URL url = new URL(urlStr);
         BufferedInputStream bis = new BufferedInputStream(url.openStream());
         FileOutputStream fis = new FileOutputStream(file);
@@ -26,7 +26,7 @@ public class FileUtils {
         bis.close();
     }
 
-    private static void downloadUsingNIO(String urlStr, String file) throws IOException {
+    public void downloadUsingNIO(String urlStr, String file) throws IOException {
         System.setProperty("http.agent", "Chrome");
         URL url = new URL(urlStr);
         ReadableByteChannel rbc = Channels.newChannel(url.openStream());
@@ -36,7 +36,7 @@ public class FileUtils {
         rbc.close();
     }
 
-    public static void copyFolder(File src, File dest)
+    public void copyFolder(File src, File dest)
             throws IOException {
 
         if (src.isDirectory()) {
@@ -79,7 +79,7 @@ public class FileUtils {
         }
     }
 
-    private static void unZip(String zipFilePath, String destDir) {
+    public void unZip(String zipFilePath, String destDir) {
         File dir = new File(destDir);
         // create output directory if it doesn't exist
         if (!dir.exists()) dir.mkdirs();

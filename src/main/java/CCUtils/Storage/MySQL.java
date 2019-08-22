@@ -2,7 +2,7 @@ package CCUtils.Storage;
 
 import java.sql.*;
 
-public class MySQL implements ISQL{
+public class MySQL implements ISQL {
 
     private String Host;
     private String Database;
@@ -27,8 +27,7 @@ public class MySQL implements ISQL{
             ex.printStackTrace();
         }
         final String url =
-                "jdbc:mysql://" + this.Host + ":" + this.Port + "/" + this.Database + "?autoReconnect=true&verifyServerCertificate=false&useSSL=true";
-// FIX       final String url = "jdbc:mysql://" + this.Host + "/" + this.Database + "?user=" + this.Username + "&password=" + this.Password;
+                "jdbc:mysql://" + this.Host + ":" + this.Port + "/" + this.Database + "?autoReconnect=true&verifyServerCertificate=false&useSSL=true&serverTimezone=EST";
         try {
             this.connection = DriverManager.getConnection(url, this.Username, this.Password);
         } catch (SQLException e) {
