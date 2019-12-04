@@ -28,7 +28,7 @@ public class SimpleClientSocket {
         setup();
     }
 
-    public void setup() {
+    private void setup() {
         try {
             socket = new Socket(this.host, this.port);
             out = new PrintWriter(socket.getOutputStream(), true);
@@ -41,7 +41,7 @@ public class SimpleClientSocket {
         run();
     }
 
-    private void jsonPrintOut(JSONObject jsonObject, String who, boolean waitForAResponse) {
+    public void jsonPrintOut(JSONObject jsonObject, String who, boolean waitForAResponse) {
         if (socket.isClosed()) setup();
         if (socket.isClosed()) return;
         jsonObject.put("WHO", who);
