@@ -18,5 +18,5 @@ public interface ISQL {
     public void ExecuteCommand(String command);
 
     public PreparedStatement ExecuteCommandPreparedStatement(String command);
-    
+
 }
