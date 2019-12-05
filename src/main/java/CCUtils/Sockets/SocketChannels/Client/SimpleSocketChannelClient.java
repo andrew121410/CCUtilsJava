@@ -33,17 +33,21 @@ public class SimpleSocketChannelClient {
         run();
     }
 
-    public void jsonPrintOut(JSONObject jsonObject, String who, boolean waitForAResponse) throws IOException {
+    public void jsonPrintOut(JSONObject jsonObject, String who, boolean waitForAResponse) {
         if (!socketChannel.isConnected()) return;
         jsonObject.put("WHO", who);
         jsonObject.put("WFR", waitForAResponse);
 
-        byte[] message = jsonObject.toJSONString().getBytes();
-        ByteBuffer buffer = ByteBuffer.wrap(message);
-        socketChannel.write(buffer);
-        buffer.clear();
-        if (!waitForAResponse) {
-            socketChannel.close();
+        try {
+            byte[] message = jsonObject.toJSONString().getBytes();
+            ByteBuffer buffer = ByteBuffer.wrap(message);
+            socketChannel.write(buffer);
+            buffer.clear();
+            if (!waitForAResponse) {
+                socketChannel.close();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 

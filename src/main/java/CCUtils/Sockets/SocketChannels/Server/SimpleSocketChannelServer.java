@@ -5,7 +5,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
@@ -21,56 +20,60 @@ public class SimpleSocketChannelServer {
 
     private Map<String, ServerSocketHandler> serverSocketHandlerMap;
 
-    public SimpleSocketChannelServer(String host, int port) throws IOException {
+    public SimpleSocketChannelServer(String host, int port) {
         this.serverSocketHandlerMap = new HashMap<>();
 
-        Selector selector = Selector.open();
-        ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
-        InetSocketAddress inetSocketAddress = new InetSocketAddress(host, port);
-        serverSocketChannel.bind(inetSocketAddress);
-        serverSocketChannel.configureBlocking(false);
-        int ops = serverSocketChannel.validOps();
-        serverSocketChannel.register(selector, ops, null);
+        try {
+            Selector selector = Selector.open();
+            ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+            serverSocketChannel.bind(new InetSocketAddress(host, port));
+            serverSocketChannel.configureBlocking(false);
+            int ops = serverSocketChannel.validOps();
+            serverSocketChannel.register(selector, ops, null);
 
-        while (true) {
-            selector.select();
-            Set<SelectionKey> selectionKeys = selector.selectedKeys();
-            Iterator<SelectionKey> iterator = selectionKeys.iterator();
+            while (true) {
+                selector.select();
+                Set<SelectionKey> selectionKeys = selector.selectedKeys();
+                Iterator<SelectionKey> iterator = selectionKeys.iterator();
 
-            while (iterator.hasNext()) {
-                SelectionKey selectionKey = iterator.next();
+                while (iterator.hasNext()) {
+                    SelectionKey selectionKey = iterator.next();
 
-                if (selectionKey.isAcceptable()) {
-                    SocketChannel socketChannel = serverSocketChannel.accept();
-                    socketChannel.configureBlocking(false);
-                    socketChannel.register(selector, SelectionKey.OP_READ);
-                    System.out.println("Connection Accepted: " + socketChannel.getLocalAddress() + "\n");
+                    if (selectionKey.isAcceptable()) {
+                        SocketChannel socketChannel = serverSocketChannel.accept();
+                        socketChannel.configureBlocking(false);
+                        socketChannel.register(selector, SelectionKey.OP_READ);
+                        System.out.println("Connection Accepted: " + socketChannel.getLocalAddress() + "\n");
 
-                } else if (selectionKey.isReadable()) {
-                    SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
-                    ByteBuffer byteBuffer = ByteBuffer.allocate(256);
-                    socketChannel.read(byteBuffer);
-                    String message = new String(byteBuffer.array()).trim();
+                    } else if (selectionKey.isReadable()) {
+                        SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
+                        ByteBuffer byteBuffer = ByteBuffer.allocate(256);
+                        socketChannel.read(byteBuffer);
+                        String message = new String(byteBuffer.array()).trim();
 
-                    JSONParser parser = new JSONParser();
-                    JSONObject json;
-                    try {
-                        json = (JSONObject) parser.parse(message);
-                    } catch (ParseException e) {
-                        System.out.println("NOT JSON");
-                        return;
+                        JSONParser parser = new JSONParser();
+                        JSONObject json;
+                        try {
+                            json = (JSONObject) parser.parse(message);
+                        } catch (ParseException e) {
+                            System.out.println("NOT JSON");
+                            return;
+                        }
+
+                        if (json == null) return;
+
+                        String who = (String) json.get("WHO");
+                        CCUtils.Sockets.interfaces.ServerSocketHandler serverSocketHandler = this.serverSocketHandlerMap.get(who);
+                        if (serverSocketHandler != null) {
+                            serverSocketHandler.translate(json);
+                        } else System.out.println("ClientHandler -> WHO: " + who);
                     }
-
-                    if (json == null) return;
-
-                    String who = (String) json.get("WHO");
-                    CCUtils.Sockets.interfaces.ServerSocketHandler serverSocketHandler = this.serverSocketHandlerMap.get(who);
-                    if (serverSocketHandler != null) {
-                        serverSocketHandler.translate(json);
-                    } else System.out.println("ClientHandler -> WHO: " + who);
+                    iterator.remove();
                 }
-                iterator.remove();
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            ;
         }
     }
 
