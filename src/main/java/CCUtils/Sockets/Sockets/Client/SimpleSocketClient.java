@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class SimpleClientSocket {
+public class SimpleSocketClient {
 
     private String host;
     private int port;
@@ -22,7 +22,7 @@ public class SimpleClientSocket {
 
     private Socket socket;
 
-    public SimpleClientSocket(String host, int port) {
+    public SimpleSocketClient(String host, int port) {
         this.host = host;
         this.port = port;
         setup();

@@ -5,7 +5,7 @@ import CCUtils.Sockets.interfaces.ServerSocketHandler;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SimpleServerSocket {
+public class SimpleSocketServer {
 
     private Map<String, ServerSocketHandler> serverSocketHandlerMap;
 
@@ -13,7 +13,7 @@ public class SimpleServerSocket {
 
     private int port;
 
-    public SimpleServerSocket(int port) {
+    public SimpleSocketServer(int port) {
         this.port = port;
 
         this.serverSocketHandlerMap = new HashMap<>();
