@@ -26,6 +26,7 @@ public class SimpleSocketChannelClient {
     private void setup() {
         try {
             socketChannel = SocketChannel.open(new InetSocketAddress(this.host, this.port));
+            socketChannel.configureBlocking(false);
         } catch (IOException e) {
             e.printStackTrace();
             return;
