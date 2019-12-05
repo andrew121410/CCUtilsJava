@@ -1,4 +1,4 @@
-package CCUtils.Sockets.Server.interfaces;
+package CCUtils.Sockets.interfaces;
 
 import org.json.simple.JSONObject;
 

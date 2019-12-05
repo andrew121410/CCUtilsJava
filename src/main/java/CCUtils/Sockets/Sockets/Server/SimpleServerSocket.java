@@ -1,6 +1,6 @@
-package CCUtils.Sockets.Server;
+package CCUtils.Sockets.Sockets.Server;
 
-import CCUtils.Sockets.Server.interfaces.ServerSocketHandler;
+import CCUtils.Sockets.interfaces.ServerSocketHandler;
 
 import java.util.HashMap;
 import java.util.Map;
