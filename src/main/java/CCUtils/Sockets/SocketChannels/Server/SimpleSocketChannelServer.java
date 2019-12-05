@@ -20,13 +20,13 @@ public class SimpleSocketChannelServer {
 
     private Map<String, ServerSocketHandler> serverSocketHandlerMap;
 
-    public SimpleSocketChannelServer(String host, int port) {
+    public SimpleSocketChannelServer(int port) {
         this.serverSocketHandlerMap = new HashMap<>();
 
         try {
             Selector selector = Selector.open();
             ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
-            serverSocketChannel.bind(new InetSocketAddress(host, port));
+            serverSocketChannel.bind(new InetSocketAddress(port));
             serverSocketChannel.configureBlocking(false);
             int ops = serverSocketChannel.validOps();
             serverSocketChannel.register(selector, ops, null);
