@@ -30,7 +30,7 @@ public class SimpleSocketChannelServer {
         try {
             serverSocketChannel = ServerSocketChannel.open();
             serverSocketChannel.configureBlocking(false);
-            serverSocketChannel.socket().bind(new InetSocketAddress("127.0.0.1", port));
+            serverSocketChannel.socket().bind(new InetSocketAddress("localhost", port));
 
             Selector selector = Selector.open();
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
