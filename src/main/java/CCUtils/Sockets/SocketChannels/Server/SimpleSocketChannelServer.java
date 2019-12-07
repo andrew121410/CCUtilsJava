@@ -20,15 +20,17 @@ import java.util.Set;
 
 public class SimpleSocketChannelServer {
 
+    private ServerSocketChannel serverSocketChannel;
+
     private Map<String, ServerSocketHandler> serverSocketHandlerMap;
 
     public SimpleSocketChannelServer(int port) {
         this.serverSocketHandlerMap = new HashMap<>();
 
         try {
-            ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+            serverSocketChannel = ServerSocketChannel.open();
             serverSocketChannel.configureBlocking(false);
-            serverSocketChannel.socket().bind(new InetSocketAddress("localhost", port));
+            serverSocketChannel.socket().bind(new InetSocketAddress("127.0.0.1", port));
 
             Selector selector = Selector.open();
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
@@ -103,5 +105,9 @@ public class SimpleSocketChannelServer {
 
     public void deleteHandler(String key) {
         this.serverSocketHandlerMap.remove(key);
+    }
+
+    public ServerSocketChannel getServerSocketChannel() {
+        return serverSocketChannel;
     }
 }
