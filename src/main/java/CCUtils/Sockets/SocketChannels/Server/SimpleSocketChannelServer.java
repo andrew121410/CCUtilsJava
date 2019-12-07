@@ -24,10 +24,11 @@ public class SimpleSocketChannelServer {
         this.serverSocketHandlerMap = new HashMap<>();
 
         try {
-            Selector selector = Selector.open();
             ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
-            serverSocketChannel.bind(new InetSocketAddress(port));
             serverSocketChannel.configureBlocking(false);
+            serverSocketChannel.socket().bind(new InetSocketAddress("localhost", port));
+
+            Selector selector = Selector.open();
             int ops = serverSocketChannel.validOps();
             serverSocketChannel.register(selector, ops, null);
 
@@ -42,7 +43,7 @@ public class SimpleSocketChannelServer {
                     if (selectionKey.isAcceptable()) {
                         SocketChannel socketChannel = serverSocketChannel.accept();
                         socketChannel.configureBlocking(false);
-                        socketChannel.register(selector, SelectionKey.OP_READ);
+                        socketChannel.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
                         System.out.println("Connection Accepted: " + socketChannel.getLocalAddress() + "\n");
 
                     } else if (selectionKey.isReadable()) {
@@ -59,7 +60,6 @@ public class SimpleSocketChannelServer {
                             System.out.println("NOT JSON");
                             return;
                         }
-
                         if (json == null) return;
 
                         String who = (String) json.get("WHO");
@@ -68,6 +68,7 @@ public class SimpleSocketChannelServer {
                             serverSocketHandler.translate(json);
                         } else System.out.println("ClientHandler -> WHO: " + who);
                     }
+
                     iterator.remove();
                 }
             }
