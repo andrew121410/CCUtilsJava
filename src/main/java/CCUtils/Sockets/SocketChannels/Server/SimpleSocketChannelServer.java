@@ -73,7 +73,6 @@ public class SimpleSocketChannelServer {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            ;
         }
     }
 

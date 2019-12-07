@@ -25,8 +25,9 @@ public class SimpleSocketChannelClient {
 
     private void setup() {
         try {
-            socketChannel = SocketChannel.open(new InetSocketAddress(this.host, this.port));
+            socketChannel = SocketChannel.open();
             socketChannel.configureBlocking(false);
+            socketChannel.connect(new InetSocketAddress(this.host, this.port));
         } catch (IOException e) {
             e.printStackTrace();
             return;
@@ -44,9 +45,6 @@ public class SimpleSocketChannelClient {
             ByteBuffer buffer = ByteBuffer.wrap(message);
             socketChannel.write(buffer);
             buffer.clear();
-            if (!waitForAResponse) {
-                socketChannel.close();
-            }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
