@@ -13,6 +13,8 @@ import java.util.Scanner;
 
 public class SimpleSocketClient {
 
+    private boolean isEnabled;
+
     private String host;
     private int port;
 
@@ -34,14 +36,16 @@ public class SimpleSocketClient {
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             inSc = new Scanner(socket.getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            isEnabled = false;
             return;
         }
+        isEnabled = true;
         run();
     }
 
     public void jsonPrintOut(JSONObject jsonObject, String who, boolean waitForAResponse) {
+        if (!isEnabled) return;
         if (socket.isClosed()) setup();
         if (socket.isClosed()) return;
         jsonObject.put("WHO", who);
@@ -53,6 +57,8 @@ public class SimpleSocketClient {
     }
 
     private void close() {
+        if (!isEnabled) return;
+
         try {
             socket.close();
             out.close();
@@ -64,6 +70,8 @@ public class SimpleSocketClient {
     }
 
     public void run() {
+        if (!isEnabled) return;
+
         String line;
         try {
             while (in.ready() && (line = in.readLine()) != null) {
