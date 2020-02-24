@@ -65,4 +65,8 @@ public class CustomYmlManager {
         configcfg = YamlConfiguration.loadConfiguration(configfile);
         System.out.println("The " + this.nameoffile + " has been reloaded.");
     }
+
+    public void reloadConfigSilent() {
+        configcfg = YamlConfiguration.loadConfiguration(configfile);
+    }
 }

@@ -1,9 +1,8 @@
-package CCUtils.Utils;
+package CCUtils.Utils.encryption;
 
 public class EcDc {
 
     public EcDc() {
-
     }
 
     public String AEncryption(String what, int number) {
@@ -14,8 +13,8 @@ public class EcDc {
         StringBuilder stringBuilder = new StringBuilder(what);
 
         for (int i = 0; i < stringBuilder.length(); i++) {
-            int temp = 0;
-            temp = (int) stringBuilder.charAt(i);
+            int temp;
+            temp = stringBuilder.charAt(i);
             temp = temp * number;
             stringBuilder.setCharAt(i, (char) temp);
         }
@@ -32,8 +31,8 @@ public class EcDc {
         StringBuilder stringBuilder = new StringBuilder(what);
 
         for (int i = 0; i < stringBuilder.length(); i++) {
-            int temp = 0;
-            temp = (int) stringBuilder.charAt(i);
+            int temp;
+            temp = stringBuilder.charAt(i);
             temp = temp / number;
             stringBuilder.setCharAt(i, (char) temp);
         }

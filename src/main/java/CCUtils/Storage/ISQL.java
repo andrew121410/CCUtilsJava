@@ -5,18 +5,18 @@ import java.sql.ResultSet;
 
 public interface ISQL {
 
-    public void Connect();
+    void Connect();
 
-    public void Disconnect();
+    void Disconnect();
 
-    public boolean isConnected();
+    boolean isConnected();
 
-    public ResultSet GetResult(String command);
+    ResultSet GetResult(String command);
 
-    public ResultSet GetResultPreparedStatement(String command);
+    ResultSet GetResultPreparedStatement(String command);
 
-    public void ExecuteCommand(String command);
+    void ExecuteCommand(String command);
 
-    public PreparedStatement ExecuteCommandPreparedStatement(String command);
+    PreparedStatement ExecuteCommandPreparedStatement(String command);
 
 }
