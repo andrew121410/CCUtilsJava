@@ -99,7 +99,7 @@ public class EasySQL {
             ResultSetMetaData md = rs.getMetaData();
             int columns = md.getColumnCount();
             while (rs.next()) {
-                for (int i = 1; i < columns; i++) {
+                for (int i = 0; i < columns; i++) {
                     String keyA = md.getColumnName(i);
                     String value = rs.getString(key);
 
