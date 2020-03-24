@@ -106,9 +106,10 @@ public class EasySQL {
                     map.putIfAbsent(keyA, value);
                 }
             }
+            return map;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return map;
+        return null;
     }
 }
