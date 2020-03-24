@@ -85,9 +85,9 @@ public class EasySQL {
             String value = stringObjectEntry.getValue();
 
             preparedStatement.setString(b, value);
-            preparedStatement.executeUpdate();
             b++;
         }
+        preparedStatement.executeUpdate();
         isql.Disconnect();
     }
 
