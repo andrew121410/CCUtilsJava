@@ -72,7 +72,7 @@ public class EasySQL {
 
         for (int i = 0; i < a; i++) {
             if (i == 0) commandBuilder.append("?");
-            else commandBuilder.append("?,");
+            else commandBuilder.append(",?");
         }
 
         commandBuilder.append(");");
