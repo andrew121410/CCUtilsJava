@@ -79,7 +79,7 @@ public class EasySQL {
 
         isql.Connect();
         PreparedStatement preparedStatement = this.isql.ExecuteCommandPreparedStatement(commandBuilder.toString());
-        int b = 0;
+        int b = 1;
         for (Map.Entry<String, String> stringObjectEntry : map.entrySet()) {
             String key = stringObjectEntry.getKey();
             String value = stringObjectEntry.getValue();
