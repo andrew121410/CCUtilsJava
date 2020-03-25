@@ -92,16 +92,23 @@ public class EasySQL {
     }
 
     public Map<String, String> get(String key) {
+        Map<String, String> map = new HashMap<>();
         isql.Connect();
         ResultSet rs = isql.GetResult("SELECT * FROM " + tableName + " WHERE (" + mainKEY + "='" + key + "');");
-        Map<String, String> map = new HashMap<>();
+
         try {
             ResultSetMetaData md = rs.getMetaData();
             int columns = md.getColumnCount();
             while (rs.next()) {
-                map.put("Stuff0", rs.getString("Stuff0"));
-                map.put("Stuff1", rs.getString("Stuff1"));
-                map.put("Stuff2", rs.getString("Stuff2"));
+                for (int i = 1; i <= columns; ++i) {
+                    String key1 = md.getColumnName(i);
+                    String value = rs.getString(i);
+
+                    System.out.println("A Key: " + key1 + " Value: " + value);
+
+                    map.put(key1, value);
+                }
+
             }
             return map;
         } catch (Exception ex) {
