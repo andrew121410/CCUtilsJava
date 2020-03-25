@@ -99,16 +99,15 @@ public class EasySQL {
             ResultSetMetaData md = rs.getMetaData();
             int columns = md.getColumnCount();
             while (rs.next()) {
-                for (int i = 1; i < columns; i++) {
-                    String keyA = md.getColumnName(i);
-                    String value = rs.getString(key);
-
-                    map.putIfAbsent(keyA, value);
-                }
+                map.put("Stuff0", rs.getString("Stuff0"));
+                map.put("Stuff1", rs.getString("Stuff1"));
+                map.put("Stuff2", rs.getString("Stuff2"));
             }
             return map;
         } catch (Exception ex) {
             ex.printStackTrace();
+        } finally {
+            isql.Disconnect();
         }
         return null;
     }
