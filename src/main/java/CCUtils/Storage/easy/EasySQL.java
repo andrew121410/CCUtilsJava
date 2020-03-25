@@ -90,7 +90,6 @@ public class EasySQL {
                     String value = rs.getString(i);
                     map.put(key1, value);
                 }
-
             }
             return map;
         } catch (Exception ex) {
@@ -99,5 +98,40 @@ public class EasySQL {
             isql.Disconnect();
         }
         return null;
+    }
+
+    public void delete(Map<String, String> map) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("DELETE FROM ").append(this.tableName).append(" WHERE ");
+        int a = 0;
+        for (Map.Entry<String, String> maper : map.entrySet()) {
+            String key = maper.getKey();
+            String value = maper.getValue();
+
+            if (a == 0) {
+                stringBuilder.append(key).append("=`").append(value).append("` ");
+                if (map.size() == 1) {
+                    stringBuilder.append(key).append("=`").append(value).append("`");
+                }
+            } else stringBuilder.append("AND ").append(key).append("=`").append(value).append("`");
+
+            a++;
+        }
+
+        isql.Connect();
+        isql.ExecuteCommand(stringBuilder.toString());
+        isql.Disconnect();
+    }
+
+    public ISQL getISQL() {
+        return isql;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public String getPrimaryKey() {
+        return primaryKey;
     }
 }

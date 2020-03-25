@@ -9,9 +9,7 @@ import java.util.zip.ZipInputStream;
 
 public class FileUtils {
 
-    public FileUtils() {
-
-    }
+    public FileUtils() {}
 
     public void downloadUsingStream(String urlStr, String file) throws IOException {
         URL url = new URL(urlStr);
