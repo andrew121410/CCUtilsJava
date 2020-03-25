@@ -22,7 +22,7 @@ public class EasySQL {
         this.tableName = tableName;
     }
 
-    public void create(List<String> list) {
+    public void create(List<String> list, boolean primaryKey) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("CREATE TABLE IF NOT EXISTS `").append(tableName).append("` (");
         int a = 0;
@@ -30,6 +30,7 @@ public class EasySQL {
             if (a == 0) {
                 this.primaryKey = s;
                 stringBuilder.append("`").append(s).append("`").append(" TEXT");
+                if (primaryKey) stringBuilder.append(" PRIMARY KEY");
             } else stringBuilder.append(",`").append(s).append("`").append(" TEXT");
             a++;
         }
@@ -41,10 +42,8 @@ public class EasySQL {
 
     public void save(Map<String, String> map) throws SQLException {
         StringBuilder commandBuilder = new StringBuilder();
-        int a = 0;
         commandBuilder.append("INSERT INTO ").append(tableName).append(" (");
-
-        //Makes insert command
+        int a = 0;
         for (Map.Entry<String, String> stringObjectEntry : map.entrySet()) {
             String key = stringObjectEntry.getKey();
 
@@ -59,9 +58,7 @@ public class EasySQL {
             if (i == 0) commandBuilder.append("?");
             else commandBuilder.append(",?");
         }
-
         commandBuilder.append(");");
-        //Done creating insert command.
 
         isql.Connect();
         PreparedStatement preparedStatement = this.isql.ExecuteCommandPreparedStatement(commandBuilder.toString());
@@ -125,12 +122,8 @@ public class EasySQL {
             String value = maper.getValue();
 
             if (a == 0) {
-                if (map.size() == 1) {
-                    stringBuilder.append(key).append("='").append(value).append("'");
-                    continue;
-                }
-                stringBuilder.append(key).append("='").append(value).append("' ");
-            } else stringBuilder.append("AND ").append(key).append("='").append(value).append("'");
+                stringBuilder.append(key).append("='").append(value).append("'");
+            } else stringBuilder.append(" AND ").append(key).append("='").append(value).append("'");
 
             a++;
         }
