@@ -1,8 +1,6 @@
 package CCUtils.Storage.easy;
 
 import CCUtils.Storage.ISQL;
-import CCUtils.Storage.MySQL;
-import CCUtils.Storage.SQLite;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,26 +9,16 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class EasySQL {
 
-    private SQLType sqlType;
     private ISQL isql;
 
+    private String tableName;
     private String primaryKey;
 
-    private String tableName;
-
-    public EasySQL(MySQL mySQL, String tableName) {
-        this.sqlType = SQLType.MySQL;
-        this.isql = mySQL;
-        this.tableName = tableName;
-    }
-
-    public EasySQL(SQLite sqLite, String tableName) {
-        this.sqlType = SQLType.SQLite;
-        this.isql = sqLite;
+    public EasySQL(ISQL isql, String tableName) {
+        this.isql = isql;
         this.tableName = tableName;
     }
 
@@ -65,7 +53,6 @@ public class EasySQL {
             } else commandBuilder.append(",").append(key);
             a++;
         }
-
         commandBuilder.append(") VALUES (");
 
         for (int i = 0; i < a; i++) {
@@ -74,6 +61,7 @@ public class EasySQL {
         }
 
         commandBuilder.append(");");
+        //Done creating insert command.
 
         isql.Connect();
         PreparedStatement preparedStatement = this.isql.ExecuteCommandPreparedStatement(commandBuilder.toString());
@@ -93,7 +81,6 @@ public class EasySQL {
         Map<String, String> map = new HashMap<>();
         isql.Connect();
         ResultSet rs = isql.GetResult("SELECT * FROM " + tableName + " WHERE (" + this.primaryKey + "='" + key + "');");
-
         try {
             ResultSetMetaData md = rs.getMetaData();
             int columns = md.getColumnCount();
@@ -101,9 +88,6 @@ public class EasySQL {
                 for (int i = 1; i <= columns; ++i) {
                     String key1 = md.getColumnName(i);
                     String value = rs.getString(i);
-
-                    System.out.println("A Key: " + key1 + " Value: " + value);
-
                     map.put(key1, value);
                 }
 
