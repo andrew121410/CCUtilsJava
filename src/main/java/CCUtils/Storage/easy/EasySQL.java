@@ -29,8 +29,8 @@ public class EasySQL {
         for (String s : list) {
             if (a == 0) {
                 this.primaryKey = s;
-                stringBuilder.append("`").append(s).append("`").append("TEXT").append(" PRIMARY KEY");
-            } else stringBuilder.append(",`").append(s).append("`").append("TEXT");
+                stringBuilder.append("`").append(s).append("`").append(" TEXT").append(" PRIMARY KEY");
+            } else stringBuilder.append(",`").append(s).append("`").append(" TEXT");
             a++;
         }
         stringBuilder.append(");");
@@ -110,11 +110,11 @@ public class EasySQL {
 
             if (a == 0) {
                 if (map.size() == 1) {
-                    stringBuilder.append(key).append("=`").append(value).append("`");
+                    stringBuilder.append(key).append("='").append(value).append("'");
                     continue;
                 }
-                stringBuilder.append(key).append("=`").append(value).append("` ");
-            } else stringBuilder.append("AND ").append(key).append("=`").append(value).append("`");
+                stringBuilder.append(key).append("='").append(value).append("' ");
+            } else stringBuilder.append("AND ").append(key).append("='").append(value).append("'");
 
             a++;
         }
