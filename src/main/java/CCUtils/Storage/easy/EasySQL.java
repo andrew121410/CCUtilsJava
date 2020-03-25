@@ -18,7 +18,7 @@ public class EasySQL {
     private SQLType sqlType;
     private ISQL isql;
 
-    private String mainKEY;
+    private String primaryKey;
 
     private String tableName;
 
@@ -39,8 +39,10 @@ public class EasySQL {
         stringBuilder.append("CREATE TABLE IF NOT EXISTS `").append(tableName).append("` (");
         int a = 0;
         for (String s : list) {
-            if (a == 0) stringBuilder.append("`").append(s).append("`").append("TEXT");
-            else stringBuilder.append(",`").append(s).append("`").append("TEXT");
+            if (a == 0) {
+                this.primaryKey = s;
+                stringBuilder.append("`").append(s).append("`").append("TEXT").append(" PRIMARY KEY");
+            } else stringBuilder.append(",`").append(s).append("`").append("TEXT");
             a++;
         }
         stringBuilder.append(");");
@@ -50,10 +52,6 @@ public class EasySQL {
     }
 
     public void save(Map<String, String> map) throws SQLException {
-        Optional<String> optional = map.keySet().stream().findFirst();
-        if (!optional.isPresent()) return;
-        this.mainKEY = optional.get();
-
         StringBuilder commandBuilder = new StringBuilder();
         int a = 0;
         commandBuilder.append("INSERT INTO ").append(tableName).append(" (");
@@ -94,7 +92,7 @@ public class EasySQL {
     public Map<String, String> get(String key) {
         Map<String, String> map = new HashMap<>();
         isql.Connect();
-        ResultSet rs = isql.GetResult("SELECT * FROM " + tableName + " WHERE (" + mainKEY + "='" + key + "');");
+        ResultSet rs = isql.GetResult("SELECT * FROM " + tableName + " WHERE (" + this.primaryKey + "='" + key + "');");
 
         try {
             ResultSetMetaData md = rs.getMetaData();
