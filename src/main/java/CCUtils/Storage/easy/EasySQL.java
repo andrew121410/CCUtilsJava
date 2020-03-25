@@ -109,10 +109,11 @@ public class EasySQL {
             String value = maper.getValue();
 
             if (a == 0) {
-                stringBuilder.append(key).append("=`").append(value).append("` ");
                 if (map.size() == 1) {
                     stringBuilder.append(key).append("=`").append(value).append("`");
+                    continue;
                 }
+                stringBuilder.append(key).append("=`").append(value).append("` ");
             } else stringBuilder.append("AND ").append(key).append("=`").append(value).append("`");
 
             a++;
