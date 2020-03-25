@@ -29,7 +29,7 @@ public class EasySQL {
         for (String s : list) {
             if (a == 0) {
                 this.primaryKey = s;
-                stringBuilder.append("`").append(s).append("`").append(" TEXT").append(" PRIMARY KEY");
+                stringBuilder.append("`").append(s).append("`").append(" TEXT");
             } else stringBuilder.append(",`").append(s).append("`").append(" TEXT");
             a++;
         }
