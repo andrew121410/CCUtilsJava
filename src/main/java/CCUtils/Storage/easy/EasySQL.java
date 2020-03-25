@@ -77,10 +77,26 @@ public class EasySQL {
         isql.Disconnect();
     }
 
-    public Map<String, String> get(String key) {
+    public Map<String, String> get(Map<String, String> fromMap) {
         Map<String, String> map = new HashMap<>();
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("SELECT * FROM ").append(tableName).append(" WHERE (");
+        int a = 0;
+        for (Map.Entry<String, String> stringStringEntry : fromMap.entrySet()) {
+            String key = stringStringEntry.getKey();
+            String value = stringStringEntry.getValue();
+
+            if (a == 0) {
+                stringBuilder.append(key).append("='").append(value).append("'");
+            } else stringBuilder.append(" AND ").append(key).append("='").append(value).append("'");
+
+            a++;
+        }
+        stringBuilder.append(");");
+
         isql.Connect();
-        ResultSet rs = isql.GetResult("SELECT * FROM " + tableName + " WHERE (" + this.primaryKey + "='" + key + "');");
+        ResultSet rs = isql.GetResult(stringBuilder.toString());
         try {
             ResultSetMetaData md = rs.getMetaData();
             int columns = md.getColumnCount();
