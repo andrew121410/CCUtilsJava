@@ -1,12 +1,13 @@
 package CCUtils.Storage.easy;
 
 import CCUtils.Storage.ISQL;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -74,8 +75,8 @@ public class EasySQL {
         isql.Disconnect();
     }
 
-    public Map<String, String> get(Map<String, String> fromMap) {
-        Map<String, String> map = new HashMap<>();
+    public MultiValuedMap<String, String> get(Map<String, String> fromMap) {
+        MultiValuedMap<String, String> map = new ArrayListValuedHashMap<>();
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT * FROM ").append(tableName).append(" WHERE (");
@@ -111,6 +112,23 @@ public class EasySQL {
             isql.Disconnect();
         }
         return null;
+    }
+
+    public MultiValuedMap<String, String> getEverything() throws SQLException {
+        MultiValuedMap<String, String> map = new ArrayListValuedHashMap<>();
+        isql.Connect();
+        ResultSet rs = isql.GetResult("SELECT FROM * " + tableName + ";");
+        ResultSetMetaData md = rs.getMetaData();
+        int columns = md.getColumnCount();
+        while (rs.next()) {
+            for (int i = 1; i <= columns; ++i) {
+                String key1 = md.getColumnName(i);
+                String value = rs.getString(i);
+                map.put(key1, value);
+            }
+        }
+
+        return map;
     }
 
     public void delete(Map<String, String> map) {
