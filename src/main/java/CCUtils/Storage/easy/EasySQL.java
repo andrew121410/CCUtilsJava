@@ -1,8 +1,8 @@
 package CCUtils.Storage.easy;
 
 import CCUtils.Storage.ISQL;
-import org.apache.commons.collections4.MultiValuedMap;
-import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -75,8 +75,8 @@ public class EasySQL {
         isql.Disconnect();
     }
 
-    public MultiValuedMap<String, String> get(Map<String, String> fromMap) {
-        MultiValuedMap<String, String> map = new ArrayListValuedHashMap<>();
+    public Multimap<String, String> get(Map<String, String> fromMap) {
+        Multimap<String, String> map = ArrayListMultimap.create();
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT * FROM ").append(tableName).append(" WHERE (");
@@ -114,8 +114,8 @@ public class EasySQL {
         return null;
     }
 
-    public MultiValuedMap<String, String> getEverything() throws SQLException {
-        MultiValuedMap<String, String> map = new ArrayListValuedHashMap<>();
+    public Multimap<String, String> getEverything() throws SQLException {
+        Multimap<String, String> map = ArrayListMultimap.create();
         isql.Connect();
         ResultSet rs = isql.GetResult("SELECT FROM * " + tableName + ";");
         ResultSetMetaData md = rs.getMetaData();
