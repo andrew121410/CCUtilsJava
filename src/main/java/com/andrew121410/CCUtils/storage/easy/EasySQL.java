@@ -41,11 +41,15 @@ public class EasySQL {
         isql.disconnect();
     }
 
-    public void save(Multimap<String, SQLDataStore> toConvert) throws SQLException {
-        for (Map.Entry<String, SQLDataStore> entry : toConvert.entries()) {
+    public void save(Multimap<String, SQLDataStore> multimap) throws SQLException {
+        for (Map.Entry<String, SQLDataStore> entry : multimap.entries()) {
             SQLDataStore value = entry.getValue();
             save(value.getMap());
         }
+    }
+
+    public void save(SQLDataStore sqlDataStore) throws SQLException {
+        save(sqlDataStore.getMap());
     }
 
     public void save(Map<String, String> map) throws SQLException {
