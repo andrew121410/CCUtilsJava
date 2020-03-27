@@ -1,4 +1,4 @@
-package CCUtils.Storage;
+package com.andrew121410.CCUtils.storage;
 
 import cc.summermc.bukkitYaml.file.FileConfiguration;
 import cc.summermc.bukkitYaml.file.YamlConfiguration;
@@ -6,6 +6,7 @@ import cc.summermc.bukkitYaml.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 
+@Deprecated
 public class CustomYmlManager {
 
     // Files & File Configs Here.

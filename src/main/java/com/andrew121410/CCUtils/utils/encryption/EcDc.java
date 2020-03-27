@@ -1,4 +1,4 @@
-package CCUtils.Utils.encryption;
+package com.andrew121410.CCUtils.utils.encryption;
 
 public class EcDc {
 

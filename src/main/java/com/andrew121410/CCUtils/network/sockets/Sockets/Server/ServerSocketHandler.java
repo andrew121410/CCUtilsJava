@@ -1,4 +1,4 @@
-package CCUtils.Sockets.Sockets.Server;
+package com.andrew121410.CCUtils.network.sockets.Sockets.Server;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class ServerSocketHandler implements Runnable {
 
-    private Map<String, CCUtils.Sockets.interfaces.ServerSocketHandler> serverSocketHandlerMap;
+    private Map<String, com.andrew121410.CCUtils.network.sockets.interfaces.ServerSocketHandler> serverSocketHandlerMap;
 
     private ThreadPoolExecutor threadPoolExecutor;
 
@@ -24,7 +24,7 @@ public class ServerSocketHandler implements Runnable {
 
     private boolean isClosed;
 
-    protected ServerSocketHandler(Socket socket, ThreadPoolExecutor threadPoolExecutor, Map<String, CCUtils.Sockets.interfaces.ServerSocketHandler> serverSocketHandlerMap) {
+    protected ServerSocketHandler(Socket socket, ThreadPoolExecutor threadPoolExecutor, Map<String, com.andrew121410.CCUtils.network.sockets.interfaces.ServerSocketHandler> serverSocketHandlerMap) {
         this.socket = socket;
         this.threadPoolExecutor = threadPoolExecutor;
         this.serverSocketHandlerMap = serverSocketHandlerMap;
@@ -58,7 +58,7 @@ public class ServerSocketHandler implements Runnable {
             if (json == null) return;
 
             String who = (String) json.get("WHO");
-            CCUtils.Sockets.interfaces.ServerSocketHandler serverSocketHandler = this.serverSocketHandlerMap.get(who);
+            com.andrew121410.CCUtils.network.sockets.interfaces.ServerSocketHandler serverSocketHandler = this.serverSocketHandlerMap.get(who);
             if (serverSocketHandler != null) {
                 serverSocketHandler.translate(json);
             } else System.out.println("ClientHandler -> WHO: " + who);

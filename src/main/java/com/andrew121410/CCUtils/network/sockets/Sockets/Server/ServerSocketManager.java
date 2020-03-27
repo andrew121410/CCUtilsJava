@@ -1,6 +1,6 @@
-package CCUtils.Sockets.Sockets.Server;
+package com.andrew121410.CCUtils.network.sockets.Sockets.Server;
 
-import CCUtils.Sockets.interfaces.ServerSocketHandler;
+import com.andrew121410.CCUtils.network.sockets.interfaces.ServerSocketHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -42,7 +42,7 @@ public class ServerSocketManager implements Runnable {
                 System.out.println("New Client: " + socket);
                 System.out.println("Adding to Thread Pool.");
 
-                this.threadPool.execute(new CCUtils.Sockets.Sockets.Server.ServerSocketHandler(socket, threadPool, serverSocketHandlerMap));
+                this.threadPool.execute(new com.andrew121410.CCUtils.network.sockets.Sockets.Server.ServerSocketHandler(socket, threadPool, serverSocketHandlerMap));
             } catch (Exception e) {
                 close(socket);
                 e.printStackTrace();

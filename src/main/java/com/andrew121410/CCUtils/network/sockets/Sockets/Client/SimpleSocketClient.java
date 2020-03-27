@@ -1,4 +1,4 @@
-package CCUtils.Sockets.Sockets.Client;
+package com.andrew121410.CCUtils.network.sockets.Sockets.Client;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

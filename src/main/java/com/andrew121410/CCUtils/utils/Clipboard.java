@@ -1,4 +1,4 @@
-package CCUtils.Utils;
+package com.andrew121410.CCUtils.utils;
 
 import java.awt.*;
 import java.awt.datatransfer.ClipboardOwner;

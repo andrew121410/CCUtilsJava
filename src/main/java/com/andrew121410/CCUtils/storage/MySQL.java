@@ -1,4 +1,4 @@
-package CCUtils.Storage;
+package com.andrew121410.CCUtils.storage;
 
 import java.sql.*;
 
@@ -20,7 +20,7 @@ public class MySQL implements ISQL {
         this.Port = port;
     }
 
-    public void Connect() {
+    public void connect() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
         } catch (Exception ex) {
@@ -34,7 +34,7 @@ public class MySQL implements ISQL {
         }
     }
 
-    public void Disconnect() {
+    public void disconnect() {
         try {
             if (!this.connection.isClosed() && this.connection != null) {
                 this.connection.close();
@@ -59,10 +59,10 @@ public class MySQL implements ISQL {
         return false;
     }
 
-    public ResultSet GetResult(String command) {
+    public ResultSet getResult(String command) {
         try {
             if (this.connection.isClosed()) {
-                this.Connect();
+                this.connect();
             }
 
             Statement st = this.connection.createStatement();
@@ -76,10 +76,10 @@ public class MySQL implements ISQL {
         return null;
     }
 
-    public ResultSet GetResultPreparedStatement(String command) {
+    public ResultSet getResultPreparedStatement(String command) {
         try {
             if (this.connection.isClosed()) {
-                this.Connect();
+                this.connect();
             }
             PreparedStatement pst = this.connection.prepareStatement(command);
             pst.executeQuery();
@@ -92,10 +92,10 @@ public class MySQL implements ISQL {
         return null;
     }
 
-    public void ExecuteCommand(String command) {
+    public void executeCommand(String command) {
         try {
             if (this.connection.isClosed()) {
-                this.Connect();
+                this.connect();
             }
             Statement st = this.connection.createStatement();
             st.executeUpdate(command);
@@ -107,10 +107,10 @@ public class MySQL implements ISQL {
 
     }
 
-    public PreparedStatement ExecuteCommandPreparedStatement(String command) {
+    public PreparedStatement executeCommandPreparedStatement(String command) {
         try {
             if (this.connection.isClosed()) {
-                this.Connect();
+                this.connect();
             }
             return this.connection.prepareStatement(command);
         } catch (SQLException e4) {

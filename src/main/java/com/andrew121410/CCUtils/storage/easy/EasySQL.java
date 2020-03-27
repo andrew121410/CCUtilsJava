@@ -1,6 +1,6 @@
-package CCUtils.Storage.easy;
+package com.andrew121410.CCUtils.storage.easy;
 
-import CCUtils.Storage.ISQL;
+import com.andrew121410.CCUtils.storage.ISQL;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
@@ -36,9 +36,16 @@ public class EasySQL {
             a++;
         }
         stringBuilder.append(");");
-        isql.Connect();
-        isql.ExecuteCommand(stringBuilder.toString());
-        isql.Disconnect();
+        isql.connect();
+        isql.executeCommand(stringBuilder.toString());
+        isql.disconnect();
+    }
+
+    public void save(Multimap<String, SQLDataStore> toConvert) throws SQLException {
+        for (Map.Entry<String, SQLDataStore> entry : toConvert.entries()) {
+            SQLDataStore value = entry.getValue();
+            save(value.getMap());
+        }
     }
 
     public void save(Map<String, String> map) throws SQLException {
@@ -47,7 +54,6 @@ public class EasySQL {
         int a = 0;
         for (Map.Entry<String, String> stringObjectEntry : map.entrySet()) {
             String key = stringObjectEntry.getKey();
-
             if (a == 0) {
                 commandBuilder.append(key);
             } else commandBuilder.append(",").append(key);
@@ -61,8 +67,8 @@ public class EasySQL {
         }
         commandBuilder.append(");");
 
-        isql.Connect();
-        PreparedStatement preparedStatement = this.isql.ExecuteCommandPreparedStatement(commandBuilder.toString());
+        isql.connect();
+        PreparedStatement preparedStatement = this.isql.executeCommandPreparedStatement(commandBuilder.toString());
         int b = 1;
         for (Map.Entry<String, String> stringObjectEntry : map.entrySet()) {
             String key = stringObjectEntry.getKey();
@@ -72,11 +78,11 @@ public class EasySQL {
             b++;
         }
         preparedStatement.executeUpdate();
-        isql.Disconnect();
+        isql.disconnect();
     }
 
-    public Multimap<String, String> get(Map<String, String> fromMap) {
-        Multimap<String, String> map = ArrayListMultimap.create();
+    public Multimap<String, SQLDataStore> get(Map<String, String> fromMap) {
+        Multimap<String, SQLDataStore> map = ArrayListMultimap.create();
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT * FROM ").append(tableName).append(" WHERE (");
@@ -84,50 +90,55 @@ public class EasySQL {
         for (Map.Entry<String, String> stringStringEntry : fromMap.entrySet()) {
             String key = stringStringEntry.getKey();
             String value = stringStringEntry.getValue();
-
             if (a == 0) {
                 stringBuilder.append(key).append("='").append(value).append("'");
             } else stringBuilder.append(" AND ").append(key).append("='").append(value).append("'");
-
             a++;
         }
         stringBuilder.append(");");
 
-        isql.Connect();
-        ResultSet rs = isql.GetResult(stringBuilder.toString());
+        isql.connect();
+        ResultSet rs = isql.getResult(stringBuilder.toString());
         try {
             ResultSetMetaData md = rs.getMetaData();
             int columns = md.getColumnCount();
             while (rs.next()) {
+                SQLDataStore sqlDataStore = new SQLDataStore();
+                String key = null;
                 for (int i = 1; i <= columns; ++i) {
                     String key1 = md.getColumnName(i);
                     String value = rs.getString(i);
-                    map.put(key1, value);
+                    if (i == 1) key = key1;
+                    sqlDataStore.getMap().put(key1, value);
                 }
+                map.put(key, sqlDataStore);
             }
             return map;
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
-            isql.Disconnect();
+            isql.disconnect();
         }
         return null;
     }
 
-    public Multimap<String, String> getEverything() throws SQLException {
-        Multimap<String, String> map = ArrayListMultimap.create();
-        isql.Connect();
-        ResultSet rs = isql.GetResult("SELECT FROM * " + tableName + ";");
+    public Multimap<String, SQLDataStore> getEverything() throws SQLException {
+        Multimap<String, SQLDataStore> map = ArrayListMultimap.create();
+        isql.connect();
+        ResultSet rs = isql.getResult("SELECT FROM * " + tableName + ";");
         ResultSetMetaData md = rs.getMetaData();
         int columns = md.getColumnCount();
         while (rs.next()) {
+            SQLDataStore sqlDataStore = new SQLDataStore();
+            String key = null;
             for (int i = 1; i <= columns; ++i) {
                 String key1 = md.getColumnName(i);
                 String value = rs.getString(i);
-                map.put(key1, value);
+                if (i == 1) key = key1;
+                sqlDataStore.getMap().putIfAbsent(key1, value);
             }
+            map.put(key, sqlDataStore);
         }
-
         return map;
     }
 
@@ -138,17 +149,14 @@ public class EasySQL {
         for (Map.Entry<String, String> maper : map.entrySet()) {
             String key = maper.getKey();
             String value = maper.getValue();
-
             if (a == 0) {
                 stringBuilder.append(key).append("='").append(value).append("'");
             } else stringBuilder.append(" AND ").append(key).append("='").append(value).append("'");
-
             a++;
         }
-
-        isql.Connect();
-        isql.ExecuteCommand(stringBuilder.toString());
-        isql.Disconnect();
+        isql.connect();
+        isql.executeCommand(stringBuilder.toString());
+        isql.disconnect();
     }
 
     public ISQL getISQL() {
