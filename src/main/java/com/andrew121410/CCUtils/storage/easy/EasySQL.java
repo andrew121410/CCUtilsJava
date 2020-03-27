@@ -129,7 +129,7 @@ public class EasySQL {
     public Multimap<String, SQLDataStore> getEverything() throws SQLException {
         Multimap<String, SQLDataStore> map = ArrayListMultimap.create();
         isql.connect();
-        ResultSet rs = isql.getResult("SELECT FROM * `" + tableName + "`;");
+        ResultSet rs = isql.getResult("SELECT * FROM " + tableName + ";");
         ResultSetMetaData md = rs.getMetaData();
         int columns = md.getColumnCount();
         while (rs.next()) {
