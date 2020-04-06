@@ -163,6 +163,22 @@ public class EasySQL {
         isql.disconnect();
     }
 
+    public void addColumn(String columnName, String after) {
+        String command = "ALTER TABLE " + this.tableName + " ADD COLUMN `" + columnName + "` TEXT";
+        if (after != null) command = command + " AFTER " + after;
+        command = command + ";";
+        isql.connect();
+        isql.executeCommand(command);
+        isql.disconnect();
+    }
+
+    public void deleteColumn(String columnName) {
+        String command = "ALTER TABLE " + this.tableName + " DROP COLUMN `" + columnName + "`;";
+        isql.connect();
+        isql.executeCommand(command);
+        isql.disconnect();
+    }
+
     public ISQL getISQL() {
         return isql;
     }
