@@ -134,15 +134,16 @@ public class EasySQL {
         int columns = md.getColumnCount();
         while (rs.next()) {
             SQLDataStore sqlDataStore = new SQLDataStore();
-            String key = null;
+            String realKey = null;
             for (int i = 1; i <= columns; ++i) {
-                String key1 = md.getColumnName(i);
+                String key = md.getColumnName(i);
                 String value = rs.getString(i);
-                if (i == 1) key = key1;
-                sqlDataStore.getMap().putIfAbsent(key1, value);
+                if (i == 1) realKey = value;
+                sqlDataStore.getMap().putIfAbsent(key, value);
             }
-            map.put(key, sqlDataStore);
+            map.put(realKey, sqlDataStore);
         }
+        isql.disconnect();
         return map;
     }
 
