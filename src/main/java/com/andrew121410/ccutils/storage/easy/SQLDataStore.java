@@ -1,17 +1,9 @@
 package com.andrew121410.ccutils.storage.easy;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
 
-public class SQLDataStore {
-
-    private Map<String, String> map;
+public class SQLDataStore extends LinkedHashMap<String, String> {
 
     public SQLDataStore() {
-        this.map = new LinkedHashMap<>();
-    }
-
-    public Map<String, String> getMap() {
-        return map;
     }
 }

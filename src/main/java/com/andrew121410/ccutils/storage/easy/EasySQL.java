@@ -44,12 +44,12 @@ public class EasySQL {
     public void save(Multimap<String, SQLDataStore> multimap) throws SQLException {
         for (Map.Entry<String, SQLDataStore> entry : multimap.entries()) {
             SQLDataStore value = entry.getValue();
-            save(value.getMap());
+            save(value);
         }
     }
 
     public void save(SQLDataStore sqlDataStore) throws SQLException {
-        save(sqlDataStore.getMap());
+        save(sqlDataStore);
     }
 
     public void save(Map<String, String> map) throws SQLException {
@@ -113,7 +113,7 @@ public class EasySQL {
                     String key1 = md.getColumnName(i);
                     String value = rs.getString(i);
                     if (i == 1) key = key1;
-                    sqlDataStore.getMap().put(key1, value);
+                    sqlDataStore.put(key1, value);
                 }
                 map.put(key, sqlDataStore);
             }
@@ -139,7 +139,7 @@ public class EasySQL {
                 String key = md.getColumnName(i);
                 String value = rs.getString(i);
                 if (i == 1) realKey = value;
-                sqlDataStore.getMap().putIfAbsent(key, value);
+                sqlDataStore.putIfAbsent(key, value);
             }
             map.put(realKey, sqlDataStore);
         }
