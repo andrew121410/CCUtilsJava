@@ -48,10 +48,6 @@ public class EasySQL {
         }
     }
 
-    public void save(SQLDataStore sqlDataStore) throws SQLException {
-        save(sqlDataStore);
-    }
-
     public void save(Map<String, String> map) throws SQLException {
         StringBuilder commandBuilder = new StringBuilder();
         commandBuilder.append("INSERT INTO ").append(tableName).append(" (");
