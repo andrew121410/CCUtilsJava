@@ -10,13 +10,9 @@ public class SimpleSocketServer extends SimpleSocket {
     @Getter
     private ServerSocket serverSocket;
 
-    public void start(int port) {
-        try {
-            serverSocket = new ServerSocket(port);
-            theLoop();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void start(int port) throws IOException {
+        serverSocket = new ServerSocket(port);
+        theLoop();
     }
 
     private void theLoop() {
