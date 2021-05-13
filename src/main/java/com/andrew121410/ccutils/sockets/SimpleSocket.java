@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.util.function.Consumer;
 
 @Getter
-public class SimpleSocket {
+public abstract class SimpleSocket {
 
     private Consumer<SimpleClientConnection> consumer;
     private boolean async;
@@ -18,4 +18,6 @@ public class SimpleSocket {
         this.async = async;
         this.consumer = consumer;
     }
+
+    abstract void receivedHeartbeat(SimpleSocketHandler simpleSocketHandler);
 }

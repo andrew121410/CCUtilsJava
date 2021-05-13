@@ -1,6 +1,7 @@
 package com.andrew121410.ccutils.sockets;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -11,6 +12,7 @@ public class SimpleSocketHandler extends Thread {
 
     private SimpleSocket simpleSocket;
     @Getter
+    @Setter
     private boolean on = true;
 
     private Socket clientSocket;
@@ -35,6 +37,10 @@ public class SimpleSocketHandler extends Thread {
                     this.on = false;
                     out.println("1");
                     break;
+                } else if (inputLine.equals("0")) {
+                    simpleSocket.receivedHeartbeat(this);
+                    out.println("0");
+                    continue;
                 }
                 SimpleClientConnection simpleClientConnection = new SimpleClientConnection(this.clientSocket, this.in, this.out, inputLine);
                 if (this.simpleSocket.isAsync()) this.simpleSocket.getConsumer().accept(simpleClientConnection);
@@ -46,6 +52,16 @@ public class SimpleSocketHandler extends Thread {
             clientSocket.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void close() {
+        on = false;
+        try {
+            in.close();
+            out.close();
+            clientSocket.close();
+        } catch (Exception ignored) {
         }
     }
 }
