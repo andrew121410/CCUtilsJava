@@ -37,14 +37,16 @@ public class SimpleSocketClient extends SimpleSocket {
         this.executor.schedule(() -> {
             //Haven't received a 0 in 3 minutes that tells that this socket is no longer connected to the server socket
             if (atomicInteger.get() == 0) {
+                this.connected = false;
                 System.out.println("Noticed that socket has been disconnected. Trying to reconnect!");
                 this.simpleSocketHandler.close();
                 //Let's try to connect again
                 try {
                     this.socket = new Socket(this.host, this.port);
                     this.simpleSocketHandler = new SimpleSocketHandler(this, this.socket);
+                    this.connected = true; //We are connected once again!
                 } catch (Exception e) {
-                    this.connected = false;
+                    //We tried to reconnect yet no success so just stop
                     stop();
                 }
             } else {
