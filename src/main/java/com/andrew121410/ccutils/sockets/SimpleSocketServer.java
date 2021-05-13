@@ -54,13 +54,17 @@ public class SimpleSocketServer extends SimpleSocket {
     }
 
     private void theLoop() {
-        while (true) {
-            try {
-                this.simpleSocketHandlers.add(new SimpleSocketHandler(this, serverSocket.accept()));
-            } catch (Exception e) {
-                e.printStackTrace();
+        //Yes I only really not smart but for now it works and I will fix later
+        new Thread(() -> {
+            while (true) {
+                try {
+                    simpleSocketHandlers.add(new SimpleSocketHandler(this, serverSocket.accept()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        }
+        });
+
     }
 
     public void stop() {
