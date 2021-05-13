@@ -34,22 +34,17 @@ public class SimpleSocketHandler extends Thread {
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 if (inputLine.equals("1")) {
-                    this.on = false;
                     out.println("1");
-                    break;
+                    close();
                 } else if (inputLine.equals("0")) {
                     simpleSocket.receivedHeartbeat(this);
                     out.println("0");
-                    continue;
+                    return;
                 }
                 SimpleClientConnection simpleClientConnection = new SimpleClientConnection(this.clientSocket, this.in, this.out, inputLine);
                 if (this.simpleSocket.isAsync()) this.simpleSocket.getConsumer().accept(simpleClientConnection);
                 else this.simpleSocket.call(simpleClientConnection);
             }
-
-            in.close();
-            out.close();
-            clientSocket.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
