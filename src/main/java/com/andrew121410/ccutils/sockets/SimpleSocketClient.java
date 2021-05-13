@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class SimpleSocketClient extends SimpleSocket {
 
+    @Getter
     private boolean connected;
 
     private String host;
@@ -45,7 +46,9 @@ public class SimpleSocketClient extends SimpleSocket {
                     this.socket = new Socket(this.host, this.port);
                     this.simpleSocketHandler = new SimpleSocketHandler(this, this.socket);
                     this.connected = true; //We are connected once again!
+                    System.out.println("We got connected once again!");
                 } catch (Exception e) {
+                    System.out.println("We tried to connect back to the socket server and it failed. Aborting!");
                     //We tried to reconnect yet no success so just stop
                     stop();
                 }
