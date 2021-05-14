@@ -59,9 +59,7 @@ public class SimpleSocketClient extends SimpleSocket {
     }
 
     public void sendMessage(String message) {
-        if (simpleSocketHandler.isOn()) {
-            this.simpleSocketHandler.getOut().println(message);
-        }
+        this.simpleSocketHandler.sendMessage(message);
     }
 
     public void stop() {

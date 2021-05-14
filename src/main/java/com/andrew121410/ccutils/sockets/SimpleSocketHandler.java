@@ -59,4 +59,9 @@ public class SimpleSocketHandler extends Thread {
         } catch (Exception ignored) {
         }
     }
+
+    public synchronized void sendMessage(String message) {
+        if (this.isOn())
+            this.out.println(message);
+    }
 }
