@@ -2,6 +2,7 @@ package com.andrew121410.ccutils.sockets;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -60,8 +61,9 @@ public class SimpleSocketHandler extends Thread {
         }
     }
 
-    public synchronized void sendMessage(String message) {
+    @SneakyThrows
+    public void sendMessage(String message) {
         if (this.isOn())
-            this.out.println(message);
+            new PrintWriter(clientSocket.getOutputStream(), true).println(message);
     }
 }
