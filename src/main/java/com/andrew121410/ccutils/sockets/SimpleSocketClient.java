@@ -21,7 +21,7 @@ public class SimpleSocketClient extends SimpleSocket {
     private SimpleSocketHandler simpleSocketHandler;
 
     private ScheduledExecutorService executor;
-    private AtomicInteger atomicInteger = new AtomicInteger(0);
+    private AtomicInteger atomicInteger = new AtomicInteger(2);
 
     public SimpleSocketClient() {
 
