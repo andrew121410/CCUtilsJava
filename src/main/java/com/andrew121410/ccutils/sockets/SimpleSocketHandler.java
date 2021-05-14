@@ -42,7 +42,7 @@ public class SimpleSocketHandler extends Thread {
                     out.println("0");
                     return;
                 }
-                SimpleClientConnection simpleClientConnection = new SimpleClientConnection(this.clientSocket, this.in, this.out, inputLine);
+                SimpleClientConnection simpleClientConnection = new SimpleClientConnection(this, inputLine);
                 if (this.simpleSocket.isAsync()) this.simpleSocket.getConsumer().accept(simpleClientConnection);
                 else this.simpleSocket.call(simpleClientConnection);
             }
