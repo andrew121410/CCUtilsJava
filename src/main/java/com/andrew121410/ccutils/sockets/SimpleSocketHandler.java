@@ -66,7 +66,6 @@ public class SimpleSocketHandler extends Thread {
         if (this.isOn()) {
             PrintWriter printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
             printWriter.println(message);
-            printWriter.close();
         }
     }
 }
