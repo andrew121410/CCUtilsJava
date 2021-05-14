@@ -63,7 +63,10 @@ public class SimpleSocketHandler extends Thread {
 
     @SneakyThrows
     public void sendMessage(String message) {
-        if (this.isOn())
-            new PrintWriter(clientSocket.getOutputStream(), true).println(message);
+        if (this.isOn()) {
+            PrintWriter printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
+            printWriter.println(message);
+            printWriter.close();
+        }
     }
 }

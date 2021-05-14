@@ -45,7 +45,7 @@ public class SimpleSocketServer extends SimpleSocket {
                 //Try to see if the socket is still connected by sending a message and waiting for a response
                 if (simpleSocketHandler.isOn()) {
                     atomicInteger.getAndIncrement();
-                    simpleSocketHandler.getOut().println("0");
+                    simpleSocketHandler.sendMessage("0");
                 } else {
                     iterator.remove();
                 }
