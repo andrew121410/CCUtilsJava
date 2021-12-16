@@ -6,13 +6,11 @@ import java.sql.*;
 
 public class SQLite implements ISQL {
 
-    private String dbName;
+    private Connection connection;
+
+    private final String dbName;
     private File file = null;
     private Path path = null;
-
-    private String url;
-
-    private Connection connection;
 
     public SQLite(String dbName) {
         this.dbName = dbName;
@@ -34,6 +32,7 @@ public class SQLite implements ISQL {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        String url;
         if (this.file == null && this.path == null) {
             url = "jdbc:sqlite:" + dbName + ".db";
         } else if (this.file != null && this.path == null) {

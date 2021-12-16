@@ -4,11 +4,11 @@ import java.sql.*;
 
 public class MySQL implements ISQL {
 
-    private String host;
-    private String database;
-    private String username;
-    private transient String password;
-    private String port;
+    private final String host;
+    private final String database;
+    private final String username;
+    private final transient String password;
+    private final String port;
 
     private Connection connection;
 
