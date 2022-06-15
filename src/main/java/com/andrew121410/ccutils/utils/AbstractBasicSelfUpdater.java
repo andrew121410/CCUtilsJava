@@ -15,30 +15,27 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
-public class AbstractUpdater {
+public class AbstractBasicSelfUpdater {
 
     private final String currentJarLocation;
     private final String urlOfJar;
     private final String urlOfHash;
 
-    private String cacheOfHashFromRemote = null;
     private boolean updatedAlready = false;
 
-    public AbstractUpdater(Class<?> aClass, String urlOfJar, String urlOfHash) {
+    public AbstractBasicSelfUpdater(Class<?> aClass, String urlOfJar, String urlOfHash) {
         this(aClass.getProtectionDomain().getCodeSource().getLocation().getFile(), urlOfJar, urlOfHash);
     }
 
-    public AbstractUpdater(String currentJarLocation, String urlOfJar, String urlOfHash) {
+    public AbstractBasicSelfUpdater(String currentJarLocation, String urlOfJar, String urlOfHash) {
         this.currentJarLocation = currentJarLocation;
         this.urlOfJar = urlOfJar;
         this.urlOfHash = urlOfHash;
     }
 
-    public boolean shouldUpdate(boolean shouldCacheRemoteHash) {
+    public boolean shouldUpdate() {
         String hashOfCurrentJar = getHashOfCurrentJar();
         String hashFromRemote = getHashFromRemote();
-
-        if (shouldCacheRemoteHash) this.cacheOfHashFromRemote = hashFromRemote;
 
         return !hashOfCurrentJar.equals(hashFromRemote);
     }
@@ -59,13 +56,10 @@ public class AbstractUpdater {
             FileOutputStream fos = new FileOutputStream(tempFile);
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 
-            if (this.cacheOfHashFromRemote == null) {
-                this.cacheOfHashFromRemote = getHashFromRemote();
-            }
-
             // Verify the hash of the downloaded file before we replace the current one
+            String hashFromRemote = getHashFromRemote();
             String hashOfDownloadedFile = getHashOfFile(tempFile);
-            if (!hashOfDownloadedFile.equals(this.cacheOfHashFromRemote)) {
+            if (!hashOfDownloadedFile.equals(hashFromRemote)) {
                 this.updatedAlready = false;
                 return "Hash of downloaded file does not match hash from remote. Aborting update.";
             }
