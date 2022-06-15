@@ -13,6 +13,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 public class AbstractUpdater {
 
@@ -82,13 +83,15 @@ public class AbstractUpdater {
 
     public String getHashFromRemote() {
         String tempDirectory = System.getProperty("java.io.tmpdir");
-        File hashFile = new File(tempDirectory, "hashh.txt"); // Yes I know this is "hashh" and not "hash"
+        File hashFile = new File(tempDirectory, "ccutils-" + UUID.randomUUID() + ".txt");
         try {
+            // Download the file from the URL.
             ReadableByteChannel readChannel = Channels.newChannel(new URL(this.urlOfHash).openStream());
             FileOutputStream fileOS = new FileOutputStream(hashFile);
             FileChannel writeChannel = fileOS.getChannel();
             writeChannel.transferFrom(readChannel, 0, Long.MAX_VALUE);
 
+            // Read the hash from the file
             String data = new String(java.nio.file.Files.readAllBytes(hashFile.toPath()));
             String[] args = data.split(" ");
             return args[0];
