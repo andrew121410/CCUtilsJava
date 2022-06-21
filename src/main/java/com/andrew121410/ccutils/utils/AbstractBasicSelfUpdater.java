@@ -5,12 +5,7 @@ import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
@@ -51,10 +46,7 @@ public class AbstractBasicSelfUpdater {
         File tempFile = new File(tempDirectory, fileOfCurrentJar.getName());
         try {
             // Download the file from the URL.
-            URL website = new URL(this.urlOfJar);
-            ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-            FileOutputStream fos = new FileOutputStream(tempFile);
-            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+            FileUtils.download(this.urlOfJar, tempFile);
 
             // Verify the hash of the downloaded file before we replace the current one
             String hashFromRemote = getHashFromRemote();
@@ -80,10 +72,7 @@ public class AbstractBasicSelfUpdater {
         File hashFile = new File(tempDirectory, "ccutils-" + UUID.randomUUID() + ".txt");
         try {
             // Download the file from the URL.
-            ReadableByteChannel readChannel = Channels.newChannel(new URL(this.urlOfHash).openStream());
-            FileOutputStream fileOS = new FileOutputStream(hashFile);
-            FileChannel writeChannel = fileOS.getChannel();
-            writeChannel.transferFrom(readChannel, 0, Long.MAX_VALUE);
+            FileUtils.download(this.urlOfHash, hashFile);
 
             // Read the hash from the file
             String data = new String(java.nio.file.Files.readAllBytes(hashFile.toPath()));
