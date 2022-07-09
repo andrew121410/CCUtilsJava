@@ -38,23 +38,17 @@ public class MySQL implements ISQL {
         try {
             if (!this.connection.isClosed() && this.connection != null) {
                 this.connection.close();
-            } else {
-                System.out.println("[MySQL] The connection is already disconnected!");
             }
-        } catch (SQLException e3) {
-            System.out.println("[MySQL] Error 03");
-            System.out.println("[MySQL] There was an error while disconnecting!");
-            e3.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
     public boolean isConnected() {
         try {
             return !this.connection.isClosed();
-        } catch (SQLException e2) {
-            System.out.println("[MySQL] Error 02");
-            System.out.println("[MySQL] An error occurred while connecting!");
-            e2.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return false;
     }
@@ -65,13 +59,11 @@ public class MySQL implements ISQL {
                 this.connect();
             }
 
-            Statement st = this.connection.createStatement();
-            st.executeQuery(command);
-            return st.getResultSet();
-        } catch (SQLException e4) {
-            System.out.println("[MySQL] Error 04");
-            System.out.println("[MySQL] An error occurred while executing the command!");
-            e4.printStackTrace();
+            Statement statement = this.connection.createStatement();
+            statement.executeQuery(command);
+            return statement.getResultSet();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -81,13 +73,11 @@ public class MySQL implements ISQL {
             if (this.connection.isClosed()) {
                 this.connect();
             }
-            PreparedStatement pst = this.connection.prepareStatement(command);
-            pst.executeQuery();
-            return pst.getResultSet();
-        } catch (SQLException e4) {
-            System.out.println("[MySQL] Error 04");
-            System.out.println("[MySQL] An error occurred while executing the command!");
-            e4.printStackTrace();
+            PreparedStatement preparedStatement = this.connection.prepareStatement(command);
+            preparedStatement.executeQuery();
+            return preparedStatement.getResultSet();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -97,14 +87,11 @@ public class MySQL implements ISQL {
             if (this.connection.isClosed()) {
                 this.connect();
             }
-            Statement st = this.connection.createStatement();
-            st.executeUpdate(command);
-        } catch (SQLException e4) {
-            System.out.println("[MySQL] Error 04");
-            System.out.println("[MySQL] An error occurred while executing the command!");
-            e4.printStackTrace();
+            Statement statement = this.connection.createStatement();
+            statement.executeUpdate(command);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
     }
 
     public PreparedStatement executeCommandPreparedStatement(String command) {
@@ -113,10 +100,8 @@ public class MySQL implements ISQL {
                 this.connect();
             }
             return this.connection.prepareStatement(command);
-        } catch (SQLException e4) {
-            System.out.println("[MySQLAPI] Error 04");
-            System.out.println("[MySQLAPI] An error occurred while executing the command!");
-            e4.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }

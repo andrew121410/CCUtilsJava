@@ -2,7 +2,10 @@ package com.andrew121410.ccutils.utils;
 
 public class StringDataTimeBuilder {
 
-    public static String makeIntoEnglishWords(long theStartTime, long theEndTime, boolean shortText) {
+    /**
+     * theStartTime and theEndTime need to be milliseconds
+     */
+    public static String makeIntoEnglishWords(long theStartTime, long theEndTime, boolean shortText, boolean includeSeconds) {
         StringBuilder stringBuilder = new StringBuilder();
 
         long timeElapsed = theEndTime - theStartTime;
@@ -44,12 +47,12 @@ public class StringDataTimeBuilder {
                     stringBuilder.append(" minutes, ");
                 }
             }
-            if (seconds > 0) {
+            if (seconds > 0 && includeSeconds) {
                 stringBuilder.append("and ");
             }
         }
 
-        if (seconds > 0) {
+        if (seconds > 0 && includeSeconds) {
             if (seconds == 1) {
                 stringBuilder.append(seconds);
                 if (shortText) {
