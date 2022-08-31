@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class AbstractBasicSelfUpdater {
 
-    private final String currentJarLocation;
+    private final String stringCurrentFileLocation;
     private final String urlOfJar;
     private final String urlOfHash;
 
@@ -22,17 +22,17 @@ public class AbstractBasicSelfUpdater {
         this(aClass.getProtectionDomain().getCodeSource().getLocation().getFile(), urlOfJar, urlOfHash);
     }
 
-    public AbstractBasicSelfUpdater(String currentJarLocation, String urlOfJar, String urlOfHash) {
-        this.currentJarLocation = currentJarLocation;
+    public AbstractBasicSelfUpdater(String stringCurrentFileLocation, String urlOfJar, String urlOfHash) {
+        this.stringCurrentFileLocation = stringCurrentFileLocation;
         this.urlOfJar = urlOfJar;
         this.urlOfHash = urlOfHash;
     }
 
     public boolean shouldUpdate() {
-        String hashOfCurrentJar = getHashOfCurrentJar();
+        String hashOfCurrentFile = getHashOfCurrentJar();
         String hashFromRemote = getHashFromRemote();
 
-        return !hashOfCurrentJar.equals(hashFromRemote);
+        return !hashOfCurrentFile.equals(hashFromRemote);
     }
 
     public String update() {
@@ -41,9 +41,10 @@ public class AbstractBasicSelfUpdater {
         this.updatedAlready = true;
 
         String tempDirectory = System.getProperty("java.io.tmpdir");
-        File fileOfCurrentJar = new File(this.currentJarLocation);
+        File fileOfCurrentFileLocation = new File(this.stringCurrentFileLocation);
+        String nameOfCurrentFileLocation = fileOfCurrentFileLocation.getName();
 
-        File tempFile = new File(tempDirectory, fileOfCurrentJar.getName());
+        File tempFile = new File(tempDirectory, "ccutils-" + nameOfCurrentFileLocation + "." + UUID.randomUUID() + ".tmp");
         try {
             // Download the file from the URL.
             FileUtils.download(this.urlOfJar, tempFile);
@@ -57,11 +58,12 @@ public class AbstractBasicSelfUpdater {
             }
 
             Path from = tempFile.toPath();
-            Path to = fileOfCurrentJar.toPath();
+            Path to = fileOfCurrentFileLocation.toPath();
             java.nio.file.Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             this.updatedAlready = false;
-            return "Failed to update " + fileOfCurrentJar.getName();
+            e.printStackTrace();
+            return "Failed to update " + fileOfCurrentFileLocation.getName();
         }
 
         return "Updated to latest version!";
@@ -69,7 +71,7 @@ public class AbstractBasicSelfUpdater {
 
     public String getHashFromRemote() {
         String tempDirectory = System.getProperty("java.io.tmpdir");
-        File hashFile = new File(tempDirectory, "ccutils-" + UUID.randomUUID() + ".txt");
+        File hashFile = new File(tempDirectory, "ccutils-hash-" + UUID.randomUUID() + ".txt");
         try {
             // Download the file from the URL.
             FileUtils.download(this.urlOfHash, hashFile);
@@ -84,7 +86,7 @@ public class AbstractBasicSelfUpdater {
     }
 
     public String getHashOfCurrentJar() {
-        File locationOfJar = new File(this.currentJarLocation);
+        File locationOfJar = new File(this.stringCurrentFileLocation);
         return getHashOfFile(locationOfJar);
     }
 
