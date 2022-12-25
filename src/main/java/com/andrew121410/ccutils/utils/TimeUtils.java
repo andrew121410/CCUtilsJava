@@ -1,6 +1,6 @@
 package com.andrew121410.ccutils.utils;
 
-public class StringDataTimeBuilder {
+public class TimeUtils {
 
     /**
      * theStartTime and theEndTime need to be milliseconds

@@ -1,5 +1,7 @@
 package com.andrew121410.ccutils.utils;
 
+import lombok.SneakyThrows;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,5 +21,10 @@ public class FileUtils {
 
     public static void download(String urlStr, String filePath) throws IOException {
         download(urlStr, new File(filePath));
+    }
+
+    @SneakyThrows
+    public static File getTheFolderTheJarIsIn() {
+        return new File(FileUtils.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile();
     }
 }

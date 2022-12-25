@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
-public class AbstractBasicSelfUpdater {
+public class HashBasedUpdater {
 
     private final String stringCurrentFileLocation;
     private final String urlOfJar;
@@ -18,11 +18,11 @@ public class AbstractBasicSelfUpdater {
 
     private boolean updatedAlready = false;
 
-    public AbstractBasicSelfUpdater(Class<?> aClass, String urlOfJar, String urlOfHash) {
+    public HashBasedUpdater(Class<?> aClass, String urlOfJar, String urlOfHash) {
         this(aClass.getProtectionDomain().getCodeSource().getLocation().getFile(), urlOfJar, urlOfHash);
     }
 
-    public AbstractBasicSelfUpdater(String stringCurrentFileLocation, String urlOfJar, String urlOfHash) {
+    public HashBasedUpdater(String stringCurrentFileLocation, String urlOfJar, String urlOfHash) {
         this.stringCurrentFileLocation = stringCurrentFileLocation;
         this.urlOfJar = urlOfJar;
         this.urlOfHash = urlOfHash;
