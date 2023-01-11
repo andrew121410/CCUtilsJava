@@ -20,6 +20,7 @@ public class MySQL implements ISQL {
         this.port = port;
     }
 
+    @Override
     public void connect() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
@@ -34,6 +35,7 @@ public class MySQL implements ISQL {
         }
     }
 
+    @Override
     public void disconnect() {
         try {
             if (!this.connection.isClosed() && this.connection != null) {
@@ -44,6 +46,7 @@ public class MySQL implements ISQL {
         }
     }
 
+    @Override
     public boolean isConnected() {
         try {
             return !this.connection.isClosed();
@@ -53,6 +56,7 @@ public class MySQL implements ISQL {
         return false;
     }
 
+    @Override
     public ResultSet getResult(String command) {
         try {
             if (this.connection.isClosed()) {
@@ -60,28 +64,14 @@ public class MySQL implements ISQL {
             }
 
             Statement statement = this.connection.createStatement();
-            statement.executeQuery(command);
-            return statement.getResultSet();
+            return statement.executeQuery(command);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public ResultSet getResultPreparedStatement(String command) {
-        try {
-            if (this.connection.isClosed()) {
-                this.connect();
-            }
-            PreparedStatement preparedStatement = this.connection.prepareStatement(command);
-            preparedStatement.executeQuery();
-            return preparedStatement.getResultSet();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
+    @Override
     public void executeCommand(String command) {
         try {
             if (this.connection.isClosed()) {
@@ -94,6 +84,7 @@ public class MySQL implements ISQL {
         }
     }
 
+    @Override
     public PreparedStatement executeCommandPreparedStatement(String command) {
         try {
             if (this.connection.isClosed()) {
@@ -104,5 +95,10 @@ public class MySQL implements ISQL {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public Connection getConnection() {
+        return connection;
     }
 }

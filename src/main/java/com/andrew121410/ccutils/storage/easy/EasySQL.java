@@ -41,14 +41,7 @@ public class EasySQL implements IEasySQL {
         isql.disconnect();
     }
 
-    public void save(Multimap<String, SQLDataStore> multimap) throws SQLException {
-        for (Map.Entry<String, SQLDataStore> entry : multimap.entries()) {
-            SQLDataStore value = entry.getValue();
-            save(value);
-        }
-    }
-
-    public void save(Map<String, String> map) throws SQLException {
+    private StringBuilder makeInsertCommand(Map<String, String> map) {
         StringBuilder commandBuilder = new StringBuilder();
         commandBuilder.append("INSERT INTO ").append(tableName).append(" (");
         int a = 0;
@@ -66,17 +59,58 @@ public class EasySQL implements IEasySQL {
             else commandBuilder.append(",?");
         }
         commandBuilder.append(");");
+        return commandBuilder;
+    }
 
+    public void save(Multimap<String, SQLDataStore> multimap) throws SQLException {
+        if (multimap.isEmpty()) {
+            throw new IllegalArgumentException("The multimap is empty!");
+        }
+        String insertCommand = makeInsertCommand(multimap.values().stream().findFirst().get()).toString();
+
+        this.isql.connect();
+        PreparedStatement preparedStatement = this.isql.executeCommandPreparedStatement(insertCommand);
+
+        this.isql.getConnection().setAutoCommit(false);
+        int i = 0;
+        for (Map.Entry<String, SQLDataStore> entry : multimap.entries()) {
+            String key = entry.getKey();
+            SQLDataStore sqlDataStore = entry.getValue();
+
+            int b = 1;
+            for (Map.Entry<String, String> stringObjectEntry : sqlDataStore.entrySet()) {
+                String value = stringObjectEntry.getValue();
+
+                preparedStatement.setString(b, value);
+                b++;
+            }
+
+            preparedStatement.addBatch();
+
+            i++;
+            if (i % 1000 == 0 || i == multimap.size()) {
+                preparedStatement.executeBatch();
+                this.isql.getConnection().commit();
+                this.isql.getConnection().setAutoCommit(true);
+            }
+        }
+
+        this.isql.disconnect();
+    }
+
+    public void save(Map<String, String> map) throws SQLException {
         isql.connect();
-        PreparedStatement preparedStatement = this.isql.executeCommandPreparedStatement(commandBuilder.toString());
+        PreparedStatement preparedStatement = this.isql.executeCommandPreparedStatement(makeInsertCommand(map).toString());
+
+        // Set the values
         int b = 1;
         for (Map.Entry<String, String> stringObjectEntry : map.entrySet()) {
-            String key = stringObjectEntry.getKey();
             String value = stringObjectEntry.getValue();
 
             preparedStatement.setString(b, value);
             b++;
         }
+
         preparedStatement.executeUpdate();
         isql.disconnect();
     }
@@ -84,22 +118,38 @@ public class EasySQL implements IEasySQL {
     public Multimap<String, SQLDataStore> get(Map<String, String> fromMap) {
         Multimap<String, SQLDataStore> map = ArrayListMultimap.create();
 
+        // Make the select command
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT * FROM ").append(tableName).append(" WHERE (");
         int a = 0;
-        for (Map.Entry<String, String> stringStringEntry : fromMap.entrySet()) {
-            String key = stringStringEntry.getKey();
-            String value = stringStringEntry.getValue();
+        for (Map.Entry<String, String> entry : fromMap.entrySet()) {
+            String key = entry.getKey();
             if (a == 0) {
-                stringBuilder.append(key).append("='").append(value).append("'");
-            } else stringBuilder.append(" AND ").append(key).append("='").append(value).append("'");
+                stringBuilder.append(key).append("=?");
+            } else {
+                stringBuilder.append(" AND ").append(key).append("=?");
+            }
             a++;
         }
         stringBuilder.append(");");
 
-        isql.connect();
-        ResultSet rs = isql.getResult(stringBuilder.toString());
+        this.isql.connect();
+        PreparedStatement preparedStatement = this.isql.executeCommandPreparedStatement(stringBuilder.toString());
+
+        // Set the values
+        int b = 1;
+        for (Map.Entry<String, String> entry : fromMap.entrySet()) {
+            String value = entry.getValue();
+            try {
+                preparedStatement.setString(b, value);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            b++;
+        }
+
         try {
+            ResultSet rs = preparedStatement.executeQuery(); // Get the result
             ResultSetMetaData md = rs.getMetaData();
             int columns = md.getColumnCount();
             while (rs.next()) {

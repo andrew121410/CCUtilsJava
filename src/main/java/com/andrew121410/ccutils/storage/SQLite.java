@@ -26,6 +26,7 @@ public class SQLite implements ISQL {
         this.dbName = dbName;
     }
 
+    @Override
     public void connect() {
         try {
             Class.forName("org.sqlite.JDBC").newInstance();
@@ -48,6 +49,7 @@ public class SQLite implements ISQL {
         }
     }
 
+    @Override
     public void disconnect() {
         try {
             if (!this.connection.isClosed() && this.connection != null) {
@@ -58,6 +60,7 @@ public class SQLite implements ISQL {
         }
     }
 
+    @Override
     public boolean isConnected() {
         try {
             return !this.connection.isClosed();
@@ -67,11 +70,13 @@ public class SQLite implements ISQL {
         return false;
     }
 
+    @Override
     public ResultSet getResult(String command) {
         try {
             if (this.connection.isClosed()) {
                 this.connect();
             }
+
             Statement statement = this.connection.createStatement();
             return statement.executeQuery(command);
         } catch (SQLException e) {
@@ -80,20 +85,7 @@ public class SQLite implements ISQL {
         return null;
     }
 
-    public ResultSet getResultPreparedStatement(String command) {
-        try {
-            if (this.connection.isClosed()) {
-                this.connect();
-            }
-            PreparedStatement preparedStatement = this.connection.prepareStatement(command);
-            preparedStatement.executeQuery();
-            return preparedStatement.getResultSet();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
+    @Override
     public void executeCommand(String command) {
         try {
             if (this.connection.isClosed()) {
@@ -107,6 +99,7 @@ public class SQLite implements ISQL {
 
     }
 
+    @Override
     public PreparedStatement executeCommandPreparedStatement(String command) {
         try {
             if (this.connection.isClosed()) {
@@ -117,5 +110,10 @@ public class SQLite implements ISQL {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public Connection getConnection() {
+        return connection;
     }
 }
