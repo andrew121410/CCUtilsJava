@@ -91,10 +91,10 @@ public class EasySQL implements IEasySQL {
             if (i % 1000 == 0 || i == multimap.size()) {
                 preparedStatement.executeBatch();
                 this.isql.getConnection().commit();
-                this.isql.getConnection().setAutoCommit(true);
             }
         }
 
+        this.isql.getConnection().setAutoCommit(true);
         this.isql.disconnect();
     }
 
