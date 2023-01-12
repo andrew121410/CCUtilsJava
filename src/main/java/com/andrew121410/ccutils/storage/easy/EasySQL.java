@@ -73,14 +73,10 @@ public class EasySQL implements IEasySQL {
 
         this.isql.getConnection().setAutoCommit(false);
         int i = 0;
-        for (Map.Entry<String, SQLDataStore> entry : multimap.entries()) {
-            String key = entry.getKey();
-            SQLDataStore sqlDataStore = entry.getValue();
+        for (SQLDataStore sqlDataStore : multimap.values()) {
 
             int b = 1;
-            for (Map.Entry<String, String> stringObjectEntry : sqlDataStore.entrySet()) {
-                String value = stringObjectEntry.getValue();
-
+            for (String value : sqlDataStore.values()) {
                 preparedStatement.setString(b, value);
                 b++;
             }
@@ -104,9 +100,7 @@ public class EasySQL implements IEasySQL {
 
         // Set the values
         int b = 1;
-        for (Map.Entry<String, String> stringObjectEntry : map.entrySet()) {
-            String value = stringObjectEntry.getValue();
-
+        for (String value : map.values()) {
             preparedStatement.setString(b, value);
             b++;
         }
@@ -138,8 +132,7 @@ public class EasySQL implements IEasySQL {
 
         // Set the values
         int b = 1;
-        for (Map.Entry<String, String> entry : fromMap.entrySet()) {
-            String value = entry.getValue();
+        for (String value : fromMap.values()) {
             try {
                 preparedStatement.setString(b, value);
             } catch (SQLException e) {
@@ -150,16 +143,16 @@ public class EasySQL implements IEasySQL {
 
         try {
             ResultSet rs = preparedStatement.executeQuery(); // Get the result
-            ResultSetMetaData md = rs.getMetaData();
-            int columns = md.getColumnCount();
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columns = metaData.getColumnCount();
             while (rs.next()) {
                 SQLDataStore sqlDataStore = new SQLDataStore();
                 String key = null;
                 for (int i = 1; i <= columns; ++i) {
-                    String key1 = md.getColumnName(i);
+                    String columnName = metaData.getColumnName(i);
                     String value = rs.getString(i);
-                    if (i == 1) key = key1;
-                    sqlDataStore.put(key1, value);
+                    if (i == 1) key = value;
+                    sqlDataStore.put(columnName, value);
                 }
                 map.put(key, sqlDataStore);
             }
