@@ -41,12 +41,11 @@ public class EasySQL implements IEasySQL {
         isql.disconnect();
     }
 
-    private StringBuilder makeInsertCommand(Map<String, String> map) {
+    private StringBuilder makeInsertCommand(SQLDataStore sqlDataStore) {
         StringBuilder commandBuilder = new StringBuilder();
         commandBuilder.append("INSERT INTO ").append(tableName).append(" (");
         int a = 0;
-        for (Map.Entry<String, String> stringObjectEntry : map.entrySet()) {
-            String key = stringObjectEntry.getKey();
+        for (String key : sqlDataStore.keySet()) {
             if (a == 0) {
                 commandBuilder.append(key);
             } else commandBuilder.append(",").append(key);
@@ -94,13 +93,13 @@ public class EasySQL implements IEasySQL {
         this.isql.disconnect();
     }
 
-    public void save(Map<String, String> map) throws SQLException {
+    public void save(SQLDataStore sqlDataStore) throws SQLException {
         isql.connect();
-        PreparedStatement preparedStatement = this.isql.executeCommandPreparedStatement(makeInsertCommand(map).toString());
+        PreparedStatement preparedStatement = this.isql.executeCommandPreparedStatement(makeInsertCommand(sqlDataStore).toString());
 
         // Set the values
         int b = 1;
-        for (String value : map.values()) {
+        for (String value : sqlDataStore.values()) {
             preparedStatement.setString(b, value);
             b++;
         }
@@ -109,15 +108,14 @@ public class EasySQL implements IEasySQL {
         isql.disconnect();
     }
 
-    public Multimap<String, SQLDataStore> get(Map<String, String> fromMap) {
-        Multimap<String, SQLDataStore> map = ArrayListMultimap.create();
+    public Multimap<String, SQLDataStore> get(SQLDataStore toGetMap) {
+        Multimap<String, SQLDataStore> multimap = ArrayListMultimap.create();
 
         // Make the select command
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT * FROM ").append(tableName).append(" WHERE (");
         int a = 0;
-        for (Map.Entry<String, String> entry : fromMap.entrySet()) {
-            String key = entry.getKey();
+        for (String key : toGetMap.keySet()) {
             if (a == 0) {
                 stringBuilder.append(key).append("=?");
             } else {
@@ -132,7 +130,7 @@ public class EasySQL implements IEasySQL {
 
         // Set the values
         int b = 1;
-        for (String value : fromMap.values()) {
+        for (String value : toGetMap.values()) {
             try {
                 preparedStatement.setString(b, value);
             } catch (SQLException e) {
@@ -154,9 +152,9 @@ public class EasySQL implements IEasySQL {
                     if (i == 1) key = value;
                     sqlDataStore.put(columnName, value);
                 }
-                map.put(key, sqlDataStore);
+                multimap.put(key, sqlDataStore);
             }
-            return map;
+            return multimap;
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {

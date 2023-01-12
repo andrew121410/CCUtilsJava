@@ -25,13 +25,13 @@ public class SynchronizedEasySQL implements IEasySQL {
     }
 
     @Override
-    public synchronized void save(Map<String, String> map) throws SQLException {
+    public synchronized void save(SQLDataStore map) throws SQLException {
         this.easySQL.save(map);
     }
 
     @Override
-    public synchronized Multimap<String, SQLDataStore> get(Map<String, String> fromMap) {
-        return this.easySQL.get(fromMap);
+    public synchronized Multimap<String, SQLDataStore> get(SQLDataStore toGetMap) {
+        return this.easySQL.get(toGetMap);
     }
 
     @Override

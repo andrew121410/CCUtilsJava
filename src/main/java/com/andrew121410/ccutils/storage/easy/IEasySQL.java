@@ -12,9 +12,9 @@ public interface IEasySQL {
 
     void save(Multimap<String, SQLDataStore> multimap) throws SQLException;
 
-    void save(Map<String, String> map) throws SQLException;
+    void save(SQLDataStore map) throws SQLException;
 
-    Multimap<String, SQLDataStore> get(Map<String, String> fromMap);
+    Multimap<String, SQLDataStore> get(SQLDataStore toGetMap);
 
     Multimap<String, SQLDataStore> getEverything() throws SQLException;
 
