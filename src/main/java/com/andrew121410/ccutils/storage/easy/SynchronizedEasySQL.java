@@ -8,49 +8,75 @@ import java.util.Map;
 
 public class SynchronizedEasySQL implements IEasySQL {
 
-    private final EasySQL easySQL;
+    private final SynchronizedMultiTableEasySQL synchronizedMultiTableEasySQL;
 
-    public SynchronizedEasySQL(EasySQL easySQL) {
-        this.easySQL = easySQL;
+    private final String tableName;
+
+    public SynchronizedEasySQL(String tableName, SynchronizedMultiTableEasySQL synchronizedMultiTableEasySQL) {
+        this.tableName = tableName;
+        this.synchronizedMultiTableEasySQL = synchronizedMultiTableEasySQL;
     }
 
     @Override
-    public synchronized void create(List<String> list, boolean primaryKey) {
-        this.easySQL.create(list, primaryKey);
+    public void create(List<String> list, boolean primaryKey) {
+        synchronized (this.synchronizedMultiTableEasySQL) {
+            this.synchronizedMultiTableEasySQL.create(this.tableName, list, primaryKey);
+        }
     }
 
     @Override
-    public synchronized void save(Multimap<String, SQLDataStore> multimap) throws SQLException {
-        this.easySQL.save(multimap);
+    public void save(Multimap<String, SQLDataStore> multimap) throws SQLException {
+        synchronized (this.synchronizedMultiTableEasySQL) {
+            this.synchronizedMultiTableEasySQL.save(this.tableName, multimap);
+        }
     }
 
     @Override
-    public synchronized void save(SQLDataStore map) throws SQLException {
-        this.easySQL.save(map);
+    public void save(SQLDataStore map) throws SQLException {
+        synchronized (this.synchronizedMultiTableEasySQL) {
+            this.synchronizedMultiTableEasySQL.save(this.tableName, map);
+        }
     }
 
     @Override
-    public synchronized Multimap<String, SQLDataStore> get(SQLDataStore toGetMap) {
-        return this.easySQL.get(toGetMap);
+    public Multimap<String, SQLDataStore> get(SQLDataStore toGetMap) throws SQLException {
+        synchronized (this.synchronizedMultiTableEasySQL) {
+            return this.synchronizedMultiTableEasySQL.get(this.tableName, toGetMap);
+        }
     }
 
     @Override
-    public synchronized Multimap<String, SQLDataStore> getEverything() throws SQLException {
-        return this.easySQL.getEverything();
+    public Multimap<String, SQLDataStore> getEverything() throws SQLException {
+        synchronized (this.synchronizedMultiTableEasySQL) {
+            return this.synchronizedMultiTableEasySQL.getEverything(this.tableName);
+        }
     }
 
     @Override
-    public synchronized void delete(Map<String, String> map) {
-        this.easySQL.delete(map);
+    public void delete(Map<String, String> map) {
+        synchronized (this.synchronizedMultiTableEasySQL) {
+            this.synchronizedMultiTableEasySQL.delete(this.tableName, map);
+        }
     }
 
     @Override
-    public synchronized void addColumn(String columnName, String after) {
-        this.easySQL.addColumn(columnName, after);
+    public void addColumn(String columnName, String after) {
+        synchronized (this.synchronizedMultiTableEasySQL) {
+            this.synchronizedMultiTableEasySQL.addColumn(this.tableName, columnName, after);
+        }
     }
 
     @Override
-    public synchronized void deleteColumn(String columnName) {
-        this.easySQL.deleteColumn(columnName);
+    public void deleteColumn(String columnName) {
+        synchronized (this.synchronizedMultiTableEasySQL) {
+            this.synchronizedMultiTableEasySQL.deleteColumn(this.tableName, columnName);
+        }
+    }
+
+    @Override
+    public List<String> getAllTables() throws SQLException {
+        synchronized (this.synchronizedMultiTableEasySQL) {
+            return this.synchronizedMultiTableEasySQL.getAllTables();
+        }
     }
 }

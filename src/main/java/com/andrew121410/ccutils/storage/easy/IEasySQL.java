@@ -14,7 +14,7 @@ public interface IEasySQL {
 
     void save(SQLDataStore map) throws SQLException;
 
-    Multimap<String, SQLDataStore> get(SQLDataStore toGetMap);
+    Multimap<String, SQLDataStore> get(SQLDataStore toGetMap) throws SQLException;
 
     Multimap<String, SQLDataStore> getEverything() throws SQLException;
 
@@ -23,4 +23,6 @@ public interface IEasySQL {
     void addColumn(String columnName, String after);
 
     void deleteColumn(String columnName);
+
+    List<String> getAllTables() throws SQLException;
 }
