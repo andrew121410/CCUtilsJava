@@ -4,7 +4,6 @@ import com.google.common.collect.Multimap;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 public interface IEasySQL {
 
@@ -18,7 +17,7 @@ public interface IEasySQL {
 
     Multimap<String, SQLDataStore> getEverything() throws SQLException;
 
-    void delete(Map<String, String> map);
+    void delete(SQLDataStore sqlDataStore) throws SQLException;
 
     void addColumn(String columnName, String after);
 

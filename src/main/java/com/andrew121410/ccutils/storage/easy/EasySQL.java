@@ -4,7 +4,6 @@ import com.google.common.collect.Multimap;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 public class EasySQL implements IEasySQL {
 
@@ -43,8 +42,8 @@ public class EasySQL implements IEasySQL {
     }
 
     @Override
-    public void delete(Map<String, String> map) {
-        this.multiTableEasySQL.delete(this.tableName, map);
+    public void delete(SQLDataStore sqlDataStore) throws SQLException {
+        this.multiTableEasySQL.delete(this.tableName, sqlDataStore);
     }
 
     @Override

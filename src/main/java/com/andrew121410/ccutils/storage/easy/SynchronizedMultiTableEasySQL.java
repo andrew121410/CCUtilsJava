@@ -4,7 +4,6 @@ import com.google.common.collect.Multimap;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 public class SynchronizedMultiTableEasySQL implements IMultiTableEasySQL {
 
@@ -40,8 +39,8 @@ public class SynchronizedMultiTableEasySQL implements IMultiTableEasySQL {
     }
 
     @Override
-    public synchronized void delete(String tableName, Map<String, String> map) {
-        this.multiTableEasySQL.delete(tableName, map);
+    public synchronized void delete(String tableName, SQLDataStore sqlDataStore) throws SQLException {
+        this.multiTableEasySQL.delete(tableName, sqlDataStore);
     }
 
     @Override
