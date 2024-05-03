@@ -1,4 +1,5 @@
 plugins {
+    id("io.freefair.lombok") version "8.6" // https://plugins.gradle.org/plugin/io.freefair.lombok
     id("com.github.johnrengelman.shadow") version "8.1.1" // https://github.com/johnrengelman/shadow
     `java-library`
     `maven-publish`
@@ -36,21 +37,14 @@ tasks {
 }
 
 repositories {
+    mavenCentral()
     mavenLocal()
-    maven {
-        url = uri("https://jitpack.io")
-    }
-
-    maven {
-        url = uri("https://repo.maven.apache.org/maven2/")
-    }
 }
 
 dependencies {
     api(libs.com.mysql.mysql.connector.j)
     api(libs.org.xerial.sqlite.jdbc)
     api(libs.com.google.guava.guava)
-    compileOnly(libs.org.projectlombok.lombok)
 }
 
 publishing {
