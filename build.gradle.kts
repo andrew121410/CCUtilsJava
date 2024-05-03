@@ -27,12 +27,15 @@ tasks {
     }
 
     shadowJar {
-        // Not needed because it's a library.
-//        archiveFileName.set("CCUtilsJava.jar")
-        archiveBaseName.set("World1-6Utils")
+        // Don't use just "archiveFileName.set("CCUtilsJava.jar")"
+        archiveBaseName.set("CCUtilsJava")
         archiveClassifier.set("")
         archiveVersion.set("")
-
+        // Jitpack.yml without the following 3 lines above, jitpack.io will not work.
+        // It seems to produce a jar file like CCUtilsJava-12672e5a95-all.jar
+        // Instead of CCUtilsJava-12672e5a95.jar notice the -all.
+        // Maven or Gradle seems to try to find the jar file WITHOUT the -all.
+        // So I wasted multiple hours trying to figure out why it wasn't working.
 
         relocate("com.google", "com.andrew121410.ccutils.dependencies.google")
         relocate("com.mysql", "com.andrew121410.ccutils.dependencies.mysql")
