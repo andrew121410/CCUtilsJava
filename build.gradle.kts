@@ -1,6 +1,7 @@
 plugins {
     id("io.freefair.lombok") version "8.6" // https://plugins.gradle.org/plugin/io.freefair.lombok
-    id("com.github.johnrengelman.shadow") version "8.1.1" // https://github.com/johnrengelman/shadow
+//    id("com.github.johnrengelman.shadow") version "8.1.1" // https://github.com/johnrengelman/shadow
+    id("io.github.goooler.shadow") version "8.1.7" // https://github.com/johnrengelman/shadow/pull/876 https://github.com/Goooler/shadow https://plugins.gradle.org/plugin/io.github.goooler.shadow
     `java-library`
     `maven-publish`
 }
