@@ -1,1 +1,1 @@
-rootProject.name = "ccutils"
+rootProject.name = "CCUtilsJava"

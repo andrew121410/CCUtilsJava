@@ -7,7 +7,7 @@ plugins {
 
 group = "com.andrew121410"
 version = "1.0"
-description = "CCUtils"
+description = "CCUtilsJava"
 
 java.sourceCompatibility = JavaVersion.VERSION_17
 java.targetCompatibility = JavaVersion.VERSION_17
@@ -49,8 +49,8 @@ dependencies {
 
 publishing {
     publications {
-        create<MavenPublication>("shadow") {
-            artifact(tasks.named("shadowJar"))
+        create<MavenPublication>("maven") {
+            artifact(tasks["shadowJar"])
         }
     }
 }
