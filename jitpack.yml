@@ -1,6 +1,6 @@
 jdk:
   - openjdk21
 install:
-  - ./gradlew build
+  - ./gradlew install
 before_install:
   - chmod +x ./gradlew
