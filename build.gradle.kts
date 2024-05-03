@@ -15,7 +15,6 @@ java.targetCompatibility = JavaVersion.VERSION_17
 tasks {
     build {
         dependsOn("shadowJar")
-        dependsOn("processResources")
     }
 
     jar {
