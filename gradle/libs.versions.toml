@@ -1,0 +1,13 @@
+# https://docs.gradle.org/current/userguide/platforms.html#sub::toml-dependencies-format
+
+[versions]
+com-google-guava-guava = "33.2.0-jre" # https://mvnrepository.com/artifact/com.google.guava/guava
+com-mysql-mysql-connector-j = "8.4.0" # https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
+org-projectlombok-lombok = "1.18.32"
+org-xerial-sqlite-jdbc = "3.45.3.0" # https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc
+
+[libraries]
+com-google-guava-guava = { module = "com.google.guava:guava", version.ref = "com-google-guava-guava" }
+com-mysql-mysql-connector-j = { module = "com.mysql:mysql-connector-j", version.ref = "com-mysql-mysql-connector-j" }
+org-projectlombok-lombok = { module = "org.projectlombok:lombok", version.ref = "org-projectlombok-lombok" }
+org-xerial-sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "org-xerial-sqlite-jdbc" }
