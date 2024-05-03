@@ -29,6 +29,10 @@ tasks {
     shadowJar {
         // Not needed because it's a library.
 //        archiveFileName.set("CCUtilsJava.jar")
+        archiveBaseName.set("World1-6Utils")
+        archiveClassifier.set("")
+        archiveVersion.set("")
+
 
         relocate("com.google", "com.andrew121410.ccutils.dependencies.google")
         relocate("com.mysql", "com.andrew121410.ccutils.dependencies.mysql")
