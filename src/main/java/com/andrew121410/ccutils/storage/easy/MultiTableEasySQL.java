@@ -1,6 +1,8 @@
 package com.andrew121410.ccutils.storage.easy;
 
 import com.andrew121410.ccutils.storage.ISQL;
+import com.andrew121410.ccutils.storage.MySQL;
+import com.andrew121410.ccutils.storage.SQLite;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
@@ -195,32 +197,93 @@ public class MultiTableEasySQL implements IMultiTableEasySQL {
 
     @Override
     public void addColumn(String tableName, String columnName, String after) {
-        String command = "ALTER TABLE " + tableName + " ADD COLUMN `" + columnName + "` TEXT";
-        if (after != null) command = command + " AFTER " + after;
-        command = command + ";";
+        // The AFTER keyword is not supported in SQLite for ALTER TABLE ADD COLUMN.
+        // This part of the addColumn method needs to be conditional based on the SQL type.
+        // In SQLite, when you add a column, it will always be added as the last column of the table.
+        String command = "ALTER TABLE ? ADD COLUMN ? TEXT";
+        if (isql instanceof MySQL && after != null) {
+            command = "ALTER TABLE ? ADD COLUMN ? TEXT AFTER " + after;
+        }
+
         isql.connect();
-        isql.executeCommand(command);
-        isql.disconnect();
+        try (PreparedStatement preparedStatement = isql.getConnection().prepareStatement(command)) {
+            preparedStatement.setString(1, tableName);
+            preparedStatement.setString(2, columnName);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            isql.disconnect();
+        }
     }
 
     @Override
     public void deleteColumn(String tableName, String columnName) {
-        String command = "ALTER TABLE " + tableName + " DROP COLUMN `" + columnName + "`;";
-        isql.connect();
-        isql.executeCommand(command);
-        isql.disconnect();
+        if (isql instanceof SQLite) {
+            // SQLite does not support DROP COLUMN directly.
+            // You need to create a new table without the column, copy data, and rename it.
+            throw new UnsupportedOperationException("SQLite does not support dropping columns directly.");
+        } else {
+            String command = "ALTER TABLE ? DROP COLUMN ?;";
+
+            isql.connect();
+            try (PreparedStatement preparedStatement = isql.getConnection().prepareStatement(command)) {
+                preparedStatement.setString(1, tableName);
+                preparedStatement.setString(2, columnName);
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                isql.disconnect();
+            }
+        }
     }
 
     @Override
     public List<String> getAllTables() throws SQLException {
         isql.connect();
-        ResultSet resultSet = isql.getResult("SHOW TABLES;");
+
         List<String> list = new ArrayList<>();
-        while (resultSet.next()) {
-            list.add(resultSet.getString(1));
+        ResultSet resultSet = null;
+        try {
+            if (isql instanceof MySQL) {
+                resultSet = isql.getResult("SHOW TABLES;");
+            } else if (isql instanceof SQLite) {
+                resultSet = isql.getResult("SELECT name FROM sqlite_master WHERE type='table';");
+            }
+
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    list.add(resultSet.getString(1));
+                }
+            }
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            isql.disconnect();
         }
-        isql.disconnect();
+
         return list;
+    }
+
+    @Override
+    public void deleteTable(String tableName) throws SQLException {
+        String command = "DROP TABLE IF EXISTS ?;";
+
+        isql.connect();
+        try (PreparedStatement preparedStatement = isql.getConnection().prepareStatement(command)) {
+            preparedStatement.setString(1, tableName);
+            preparedStatement.executeUpdate();
+        } finally {
+            isql.disconnect();
+        }
     }
 
     public ISQL getISQL() {

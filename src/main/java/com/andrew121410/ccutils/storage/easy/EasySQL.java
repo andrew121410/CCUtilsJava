@@ -60,4 +60,9 @@ public class EasySQL implements IEasySQL {
     public List<String> getAllTables() throws SQLException {
         return this.multiTableEasySQL.getAllTables();
     }
+
+    @Override
+    public void deleteTable() throws SQLException {
+        this.multiTableEasySQL.deleteTable(this.tableName);
+    }
 }

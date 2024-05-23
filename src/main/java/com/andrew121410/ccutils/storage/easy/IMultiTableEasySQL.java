@@ -25,4 +25,6 @@ public interface IMultiTableEasySQL {
     void deleteColumn(String tableName, String columnName);
 
     List<String> getAllTables() throws SQLException;
+
+    void deleteTable(String tableName) throws SQLException;
 }

@@ -24,4 +24,6 @@ public interface IEasySQL {
     void deleteColumn(String columnName);
 
     List<String> getAllTables() throws SQLException;
+
+    void deleteTable() throws SQLException;
 }

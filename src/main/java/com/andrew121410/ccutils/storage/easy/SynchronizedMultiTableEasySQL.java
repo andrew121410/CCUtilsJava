@@ -57,4 +57,9 @@ public class SynchronizedMultiTableEasySQL implements IMultiTableEasySQL {
     public synchronized List<String> getAllTables() throws SQLException {
         return this.multiTableEasySQL.getAllTables();
     }
+
+    @Override
+    public synchronized void deleteTable(String tableName) throws SQLException {
+        this.multiTableEasySQL.deleteTable(tableName);
+    }
 }

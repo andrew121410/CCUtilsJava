@@ -78,4 +78,11 @@ public class SynchronizedEasySQL implements IEasySQL {
             return this.synchronizedMultiTableEasySQL.getAllTables();
         }
     }
+
+    @Override
+    public void deleteTable() throws SQLException {
+        synchronized (this.synchronizedMultiTableEasySQL) {
+            this.synchronizedMultiTableEasySQL.deleteTable(this.tableName);
+        }
+    }
 }
