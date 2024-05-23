@@ -5,6 +5,7 @@ import com.andrew121410.ccutils.storage.MySQL;
 import com.andrew121410.ccutils.storage.SQLite;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import lombok.SneakyThrows;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -195,28 +196,29 @@ public class MultiTableEasySQL implements IMultiTableEasySQL {
         this.isql.disconnect();
     }
 
+    @SneakyThrows
     @Override
     public void addColumn(String tableName, String columnName, String after) {
-        // The AFTER keyword is not supported in SQLite for ALTER TABLE ADD COLUMN.
-        // This part of the addColumn method needs to be conditional based on the SQL type.
-        // In SQLite, when you add a column, it will always be added as the last column of the table.
-        String command = "ALTER TABLE ? ADD COLUMN ? TEXT";
-        if (isql instanceof MySQL && after != null) {
-            command = "ALTER TABLE ? ADD COLUMN ? TEXT AFTER " + after;
+        if (!isValidIdentifier(tableName) || !isValidIdentifier(columnName) || (after != null && !isValidIdentifier(after))) {
+            throw new SQLException("Invalid table or column name.");
         }
 
+        // Construct the SQL command
+        String command = "ALTER TABLE `" + tableName + "` ADD COLUMN `" + columnName + "` TEXT";
+        if (isql instanceof MySQL && after != null) {
+            command += " AFTER `" + after + "`";
+        }
+        command += ";";
+
         isql.connect();
-        try (PreparedStatement preparedStatement = isql.getConnection().prepareStatement(command)) {
-            preparedStatement.setString(1, tableName);
-            preparedStatement.setString(2, columnName);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        try {
+            isql.executeCommand(command);
         } finally {
             isql.disconnect();
         }
     }
 
+    @SneakyThrows
     @Override
     public void deleteColumn(String tableName, String columnName) {
         if (isql instanceof SQLite) {
@@ -224,15 +226,15 @@ public class MultiTableEasySQL implements IMultiTableEasySQL {
             // You need to create a new table without the column, copy data, and rename it.
             throw new UnsupportedOperationException("SQLite does not support dropping columns directly.");
         } else {
-            String command = "ALTER TABLE ? DROP COLUMN ?;";
+            if (!isValidIdentifier(tableName) || !isValidIdentifier(columnName)) {
+                throw new SQLException("Invalid table or column name.");
+            }
+
+            String command = "ALTER TABLE `" + tableName + "` DROP COLUMN `" + columnName + "`;";
 
             isql.connect();
-            try (PreparedStatement preparedStatement = isql.getConnection().prepareStatement(command)) {
-                preparedStatement.setString(1, tableName);
-                preparedStatement.setString(2, columnName);
-                preparedStatement.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
+            try {
+                isql.executeCommand(command);
             } finally {
                 isql.disconnect();
             }
@@ -275,15 +277,28 @@ public class MultiTableEasySQL implements IMultiTableEasySQL {
 
     @Override
     public void deleteTable(String tableName) throws SQLException {
-        String command = "DROP TABLE IF EXISTS ?;";
+        if (!isValidIdentifier(tableName)) {
+            throw new SQLException("Invalid table name.");
+        }
+
+        String command = "DROP TABLE IF EXISTS `" + tableName + "`;";
 
         isql.connect();
-        try (PreparedStatement preparedStatement = isql.getConnection().prepareStatement(command)) {
-            preparedStatement.setString(1, tableName);
-            preparedStatement.executeUpdate();
+        try {
+            isql.executeCommand(command);
         } finally {
             isql.disconnect();
         }
+    }
+
+    /**
+     * Validates if the given identifier (table or column name) is a valid SQL identifier.
+     *
+     * @param identifier The identifier to validate.
+     * @return true if valid, false otherwise.
+     */
+    private boolean isValidIdentifier(String identifier) {
+        return identifier != null && identifier.matches("[a-zA-Z_][a-zA-Z0-9_]*");
     }
 
     public ISQL getISQL() {
