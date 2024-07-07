@@ -12,20 +12,26 @@ import java.util.UUID;
 
 public class HashBasedUpdater {
 
-    private final String stringCurrentFileLocation;
+    private final File currentFileLocation;
     private final String urlOfJar;
     private final String urlOfHash;
+    private final File optionalNewLocation;
 
     private boolean updatedAlready = false;
 
     public HashBasedUpdater(Class<?> aClass, String urlOfJar, String urlOfHash) {
-        this(aClass.getProtectionDomain().getCodeSource().getLocation().getFile(), urlOfJar, urlOfHash);
+        this(new File(aClass.getProtectionDomain().getCodeSource().getLocation().getFile()), urlOfJar, urlOfHash, null);
     }
 
-    public HashBasedUpdater(String stringCurrentFileLocation, String urlOfJar, String urlOfHash) {
-        this.stringCurrentFileLocation = stringCurrentFileLocation;
+    public HashBasedUpdater(File currentFileLocation, String urlOfJar, String urlOfHash) {
+        this(currentFileLocation, urlOfJar, urlOfHash, null);
+    }
+
+    public HashBasedUpdater(File currentFileLocation, String urlOfJar, String urlOfHash, File optionalNewLocation) {
+        this.currentFileLocation = currentFileLocation;
         this.urlOfJar = urlOfJar;
         this.urlOfHash = urlOfHash;
+        this.optionalNewLocation = optionalNewLocation;
     }
 
     public boolean shouldUpdate() {
@@ -41,8 +47,7 @@ public class HashBasedUpdater {
         this.updatedAlready = true;
 
         String tempDirectory = System.getProperty("java.io.tmpdir");
-        File fileOfCurrentFileLocation = new File(this.stringCurrentFileLocation);
-        String nameOfCurrentFileLocation = fileOfCurrentFileLocation.getName();
+        String nameOfCurrentFileLocation = currentFileLocation.getName();
 
         File tempFile = new File(tempDirectory, "ccutils-" + nameOfCurrentFileLocation + "." + UUID.randomUUID() + ".tmp");
         try {
@@ -58,12 +63,12 @@ public class HashBasedUpdater {
             }
 
             Path from = tempFile.toPath();
-            Path to = fileOfCurrentFileLocation.toPath();
+            Path to = (optionalNewLocation != null) ? optionalNewLocation.toPath() : currentFileLocation.toPath();
             java.nio.file.Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             this.updatedAlready = false;
             e.printStackTrace();
-            return "Failed to update " + fileOfCurrentFileLocation.getName();
+            return "Failed to update " + currentFileLocation.getName();
         }
 
         return "Updated to latest version!";
@@ -86,8 +91,7 @@ public class HashBasedUpdater {
     }
 
     public String getHashOfCurrentJar() {
-        File locationOfJar = new File(this.stringCurrentFileLocation);
-        return getHashOfFile(locationOfJar);
+        return getHashOfFile(currentFileLocation);
     }
 
     public String getHashOfFile(File file) {
