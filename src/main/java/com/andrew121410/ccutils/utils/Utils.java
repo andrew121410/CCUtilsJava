@@ -116,11 +116,13 @@ public class Utils {
     }
 
     public static Boolean asBooleanOrElse(String input, Boolean fallback) {
-        try {
-            return Boolean.parseBoolean(input);
-        } catch (NumberFormatException e) {
+        if (input == null) {
             return fallback;
         }
+        if ("true".equalsIgnoreCase(input) || "false".equalsIgnoreCase(input)) {
+            return Boolean.parseBoolean(input);
+        }
+        return fallback;
     }
 
     public static String getIndexFromStringList(List<String> stringList, int index) {
@@ -128,6 +130,10 @@ public class Utils {
             return stringList.get(index);
         }
         return null;
+    }
+
+    public static boolean indexExists(final List list, final int index) {
+        return index >= 0 && index < list.size();
     }
 
     public String getLastStrings(String myString, int index) {
