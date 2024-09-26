@@ -4,7 +4,7 @@
 com-google-guava-guava = "33.3.1-jre" # https://mvnrepository.com/artifact/com.google.guava/guava
 com-mysql-mysql-connector-j = "9.0.0" # https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
 org-projectlombok-lombok = "1.18.34"
-org-xerial-sqlite-jdbc = "3.46.1.0" # https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc
+org-xerial-sqlite-jdbc = "3.46.1.2" # https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc
 
 [libraries]
 com-google-guava-guava = { module = "com.google.guava:guava", version.ref = "com-google-guava-guava" }
