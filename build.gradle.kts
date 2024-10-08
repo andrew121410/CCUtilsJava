@@ -1,6 +1,6 @@
 plugins {
-    id("io.freefair.lombok") version "8.10" // https://plugins.gradle.org/plugin/io.freefair.lombok
-    id("com.gradleup.shadow") version "8.3.2" // https://github.com/GradleUp/shadow
+    id("io.freefair.lombok") version "8.10.2" // https://plugins.gradle.org/plugin/io.freefair.lombok
+    id("com.gradleup.shadow") version "8.3.3" // https://github.com/GradleUp/shadow
     `java-library`
     `maven-publish`
 }
