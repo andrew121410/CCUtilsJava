@@ -36,9 +36,14 @@ tasks {
         // Maven or Gradle seems to try to find the jar file WITHOUT the -all.
         // So I wasted multiple hours trying to figure out why it wasn't working.
 
-        relocate("com.google", "com.andrew121410.ccutils.dependencies.google")
-        relocate("com.mysql", "com.andrew121410.ccutils.dependencies.mysql")
-        relocate("org.xerial", "com.andrew121410.ccutils.dependencies.sqlite")
+//        relocate("com.google", "com.andrew121410.ccutils.dependencies.google")
+//        relocate("com.mysql", "com.andrew121410.ccutils.dependencies.mysql")
+//        relocate("org.xerial", "com.andrew121410.ccutils.dependencies.sqlite")
+
+        isEnableRelocation = true
+        relocationPrefix = "com.andrew121410.ccutils.dependencies"
+
+        exclude("META-INF/**")
     }
 }
 
