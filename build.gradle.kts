@@ -1,6 +1,8 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
-    id("io.freefair.lombok") version "8.11" // https://plugins.gradle.org/plugin/io.freefair.lombok
-    id("com.gradleup.shadow") version "8.3.5" // https://github.com/GradleUp/shadow
+    id("io.freefair.lombok") version "8.11"
+    id("com.gradleup.shadow") version "8.3.5"
     `java-library`
     `maven-publish`
 }
@@ -11,41 +13,6 @@ description = "CCUtilsJava"
 
 java.sourceCompatibility = JavaVersion.VERSION_21
 java.targetCompatibility = JavaVersion.VERSION_21
-
-tasks {
-    build {
-        dependsOn("shadowJar")
-    }
-
-    jar {
-        enabled = false
-    }
-
-    compileJava {
-        options.encoding = "UTF-8"
-    }
-
-    shadowJar {
-        // Don't use just "archiveFileName.set("CCUtilsJava.jar")"
-        archiveBaseName.set("CCUtilsJava")
-        archiveClassifier.set("")
-        archiveVersion.set("")
-        // Jitpack.yml without the following 3 lines above, jitpack.io will not work.
-        // It seems to produce a jar file like CCUtilsJava-12672e5a95-all.jar
-        // Instead of CCUtilsJava-12672e5a95.jar notice the -all.
-        // Maven or Gradle seems to try to find the jar file WITHOUT the -all.
-        // So I wasted multiple hours trying to figure out why it wasn't working.
-
-//        relocate("com.google", "com.andrew121410.ccutils.dependencies.google")
-//        relocate("com.mysql", "com.andrew121410.ccutils.dependencies.mysql")
-//        relocate("org.xerial", "com.andrew121410.ccutils.dependencies.sqlite")
-
-        isEnableRelocation = true
-        relocationPrefix = "com.andrew121410.ccutils.dependencies"
-
-        exclude("META-INF/**")
-    }
-}
 
 repositories {
     mavenCentral()
@@ -58,10 +25,68 @@ dependencies {
     api(libs.com.google.guava.guava)
 }
 
+tasks {
+    val baseJar = register<ShadowJar>("baseJar") {
+        archiveBaseName.set("CCUtilsJavaBase")
+        archiveClassifier.set("")
+        archiveVersion.set("")
+        from(sourceSets["main"].output)
+        configurations = listOf(project.configurations.runtimeClasspath.get())
+        exclude("META-INF/**")
+    }
+
+    val relocatedJar = register<ShadowJar>("relocatedJar") {
+        archiveBaseName.set("CCUtilsJavaRelocated")
+        archiveClassifier.set("")
+        archiveVersion.set("")
+        from(sourceSets["main"].output)
+        configurations = listOf(project.configurations.runtimeClasspath.get())
+        isEnableRelocation = true
+        relocationPrefix = "com.andrew121410.ccutils.dependencies"
+        exclude("META-INF/**")
+    }
+
+    val bukkitJar = register<ShadowJar>("bukkitJar") {
+        archiveBaseName.set("CCUtilsJavaBukkit")
+        archiveClassifier.set("")
+        archiveVersion.set("")
+
+        from(sourceSets["main"].output)
+//        configurations = listOf(project.configurations.runtimeClasspath.get())
+
+        // Remove the dependencies that are already in the Bukkit jar
+//        dependencies {
+//            exclude(dependency("com.mysql:mysql-connector-j"))
+//            exclude(dependency("org.xerial:sqlite-jdbc"))
+//            exclude(dependency("com.google.guava:guava"))
+//        }
+
+        exclude("META-INF/**")
+    }
+
+    build {
+        dependsOn(baseJar, relocatedJar, bukkitJar)
+    }
+
+    jar {
+        enabled = false
+    }
+
+    compileJava {
+        options.encoding = "UTF-8"
+    }
+}
+
 publishing {
     publications {
-        create<MavenPublication>("maven") {
-            artifact(tasks["shadowJar"])
+        create<MavenPublication>("base") {
+            artifact(tasks.named<ShadowJar>("baseJar").get())
+        }
+        create<MavenPublication>("relocated") {
+            artifact(tasks.named<ShadowJar>("relocatedJar").get())
+        }
+        create<MavenPublication>("bukkit") {
+            artifact(tasks.named<ShadowJar>("bukkitJar").get())
         }
     }
 }

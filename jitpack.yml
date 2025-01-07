@@ -1,6 +1,6 @@
 jdk:
   - openjdk21
-install:
-  - ./gradlew publishToMavenLocal
 before_install:
   - chmod +x ./gradlew
+install:
+  - ./gradlew baseJar relocatedJar bukkitJar publishToMavenLocal
