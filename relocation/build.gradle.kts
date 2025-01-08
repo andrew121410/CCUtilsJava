@@ -35,7 +35,7 @@ tasks {
 
     shadowJar {
         archiveBaseName.set("CCUtilsJava")
-        archiveClassifier.set("relocation")
+        archiveClassifier.set("")
         archiveVersion.set("")
 
         relocate("com.google", "com.andrew121410.ccutils.dependencies.google")
