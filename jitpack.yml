@@ -3,6 +3,4 @@ jdk:
 before_install:
   - chmod +x ./gradlew
 install:
-  - ./gradlew build :core:publishToMavenLocal
-  - ./gradlew build :relocation:publishToMavenLocal
-  - ./gradlew build :bukkit:publishToMavenLocal
+  - ./gradlew :core:publishToMavenLocal :relocation:publishToMavenLocal :bukkit:publishToMavenLocal
