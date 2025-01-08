@@ -38,9 +38,9 @@ tasks {
 
     shadowJar {
         // Don't use just "archiveFileName.set("CCUtilsJava.jar")"
-        archiveBaseName.set("CCUtilsJava")
-        archiveClassifier.set("")
-        archiveVersion.set("")
+//        archiveBaseName.set("CCUtilsJava")
+//        archiveClassifier.set("")
+//        archiveVersion.set("")
 
         // Jitpack.yml without the following 3 lines above, jitpack.io will not work.
         // It seems to produce a jar file like CCUtilsJava-12672e5a95-all.jar
