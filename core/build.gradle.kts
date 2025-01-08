@@ -53,6 +53,9 @@ tasks {
 publishing {
     publications {
         create<MavenPublication>("maven") {
+            groupId = "com.github.andrew121410"
+            artifactId = "ccutilsjava-core"
+            version = "1.0"
             artifact(tasks["shadowJar"])
         }
     }

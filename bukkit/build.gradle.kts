@@ -34,15 +34,18 @@ tasks {
     }
 
     shadowJar {
-//        archiveBaseName.set("CCUtilsJava")
-//        archiveClassifier.set("Bukkit")
-//        archiveVersion.set("")
+        archiveBaseName.set("CCUtilsJava")
+        archiveClassifier.set("Bukkit")
+        archiveVersion.set("")
     }
 }
 
 publishing {
     publications {
         create<MavenPublication>("maven") {
+            groupId = "com.github.andrew121410"
+            artifactId = "ccutilsjava-bukkit"
+            version = "1.0"
             artifact(tasks["shadowJar"])
         }
     }

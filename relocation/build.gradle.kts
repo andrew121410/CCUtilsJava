@@ -54,6 +54,9 @@ tasks {
 publishing {
     publications {
         create<MavenPublication>("maven") {
+            groupId = "com.github.andrew121410"
+            artifactId = "ccutilsjava-relocation"
+            version = "1.0"
             artifact(tasks["shadowJar"])
         }
     }
