@@ -34,9 +34,9 @@ tasks {
     }
 
     shadowJar {
-//        archiveBaseName.set("CCUtilsJava")
-//        archiveClassifier.set("Bukkit")
-//        archiveVersion.set("")
+        archiveBaseName.set("CCUtilsJava")
+        archiveClassifier.set("bukkit")
+        archiveVersion.set("")
     }
 }
 

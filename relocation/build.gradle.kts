@@ -34,9 +34,9 @@ tasks {
     }
 
     shadowJar {
-//        archiveBaseName.set("CCUtilsJava")
-//        archiveClassifier.set("Relocated")
-//        archiveVersion.set("")
+        archiveBaseName.set("CCUtilsJava")
+        archiveClassifier.set("relocation")
+        archiveVersion.set("")
 
         relocate("com.google", "com.andrew121410.ccutils.dependencies.google")
         relocate("com.mysql", "com.andrew121410.ccutils.dependencies.mysql")
