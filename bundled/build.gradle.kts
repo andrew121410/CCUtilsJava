@@ -7,7 +7,7 @@ plugins {
 
 group = "com.andrew121410"
 version = "1.0"
-description = "CCUtilsJava Core"
+description = "CCUtilsJava Bundled"
 
 java.sourceCompatibility = JavaVersion.VERSION_21
 java.targetCompatibility = JavaVersion.VERSION_21
@@ -54,7 +54,7 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = "com.github.andrew121410"
-            artifactId = "ccutilsjava-core"
+            artifactId = "ccutilsjava-bundled"
             version = "1.0"
             artifact(tasks["shadowJar"])
         }

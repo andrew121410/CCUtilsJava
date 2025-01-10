@@ -15,9 +15,8 @@ repositories {
     mavenCentral()
     mavenLocal()
 }
-
 dependencies {
-    api(project(":core"))
+    api(project(":bundled"))
 }
 
 tasks {

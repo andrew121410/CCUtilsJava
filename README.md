@@ -13,22 +13,4 @@ manipulation, SQL database interactions, and more.
 
 ## Installation
 
-### Gradle
-
-1. Add the JitPack repository to your `build.gradle.kts`:
-
-    ```kotlin
-    repositories {
-        maven { url = uri("https://jitpack.io") }
-    }
-    ```
-
-2. Add the CCUtils dependency:
-
-    ```kotlin
-    dependencies {
-        implementation("com.github.andrew121410:CCUtilsJava:Tag")
-    }
-    ```
-
-To find the latest version, visit [JitPack](https://jitpack.io/#andrew121410/CCUtilsJava/).
+[JitPack](https://jitpack.io/#andrew121410/CCUtilsJava/).

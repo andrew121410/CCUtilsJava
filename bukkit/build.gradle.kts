@@ -15,9 +15,8 @@ repositories {
     mavenCentral()
     mavenLocal()
 }
-
 dependencies {
-    api(project(":core"))
+    api(project(":"))
 }
 
 tasks {
@@ -37,24 +36,6 @@ tasks {
         archiveBaseName.set("CCUtilsJava")
         archiveClassifier.set("")
         archiveVersion.set("")
-
-        configurations = listOf(
-            project.configurations.compileClasspath.get().exclude(group = "com.mysql", module = "mysql-connector-java"),
-            project.configurations.compileClasspath.get().exclude(group = "org.xerial", module = "sqlite-jdbc"),
-            project.configurations.compileClasspath.get().exclude(group = "com.google.guava", module = "guava")
-        )
-        exclude("com/mysql/**")
-        exclude("org/xerial/**")
-        exclude("com/google/**")
-        exclude("google/**")
-
-        // Random ahh stuff
-        exclude("README")
-        exclude("LICENSE")
-        exclude("INFO_SRC")
-        exclude("INFO_BIN")
-
-        exclude("META-INF/**")
     }
 }
 
