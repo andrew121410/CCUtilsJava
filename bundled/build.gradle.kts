@@ -1,8 +1,8 @@
 plugins {
     `java-library`
     `maven-publish`
-    id("io.freefair.lombok") version "8.12" // https://plugins.gradle.org/plugin/io.freefair.lombok
-    id("com.gradleup.shadow") version "8.3.5" // https://github.com/GradleUp/shadow
+    id("io.freefair.lombok") version "8.12.1" // https://plugins.gradle.org/plugin/io.freefair.lombok
+    id("com.gradleup.shadow") version "8.3.6" // https://github.com/GradleUp/shadow
 }
 
 group = "com.andrew121410"
