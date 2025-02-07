@@ -18,6 +18,8 @@ repositories {
 }
 
 dependencies {
+    api(project(":"))
+
     api(libs.com.mysql.mysql.connector.j)
     api(libs.org.xerial.sqlite.jdbc)
     api(libs.com.google.guava.guava)
