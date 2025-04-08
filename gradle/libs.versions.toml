@@ -1,7 +1,7 @@
 # https://docs.gradle.org/current/userguide/platforms.html#sub::toml-dependencies-format
 
 [versions]
-com-google-guava-guava = "33.4.6-jre" # https://mvnrepository.com/artifact/com.google.guava/guava
+com-google-guava-guava = "33.4.7-android" # https://mvnrepository.com/artifact/com.google.guava/guava
 com-mysql-mysql-connector-j = "9.2.0" # https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
 org-xerial-sqlite-jdbc = "3.49.1.0" # https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc
 
