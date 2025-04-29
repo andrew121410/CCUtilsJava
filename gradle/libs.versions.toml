@@ -2,7 +2,7 @@
 
 [versions]
 com-google-guava-guava = "33.4.8-jre" # https://mvnrepository.com/artifact/com.google.guava/guava
-com-mysql-mysql-connector-j = "9.2.0" # https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
+com-mysql-mysql-connector-j = "9.3.0" # https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
 org-xerial-sqlite-jdbc = "3.49.1.0" # https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc
 
 [libraries]
