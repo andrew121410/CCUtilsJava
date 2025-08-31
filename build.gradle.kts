@@ -1,7 +1,7 @@
 plugins {
     `java-library`
     `maven-publish`
-    id("io.freefair.lombok") version "8.14" // https://plugins.gradle.org/plugin/io.freefair.lombok
+    id("io.freefair.lombok") version "8.14.2" // https://plugins.gradle.org/plugin/io.freefair.lombok
 }
 
 group = "com.andrew121410"
