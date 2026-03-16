@@ -1,7 +1,7 @@
 plugins {
     `java-library`
     `maven-publish`
-    id("com.gradleup.shadow") version "9.3.2" // https://github.com/GradleUp/shadow
+    id("com.gradleup.shadow") version "9.4.0" // https://github.com/GradleUp/shadow
 }
 
 group = "com.andrew121410"
